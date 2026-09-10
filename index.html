@@ -186,13 +186,20 @@
   .dup-fila .datos .n{color:var(--gris);font-size:12px}
   .dup-fila label{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--aviso);white-space:nowrap}
   .dup-fila .conservar{color:var(--ok);font-size:12px;border:1px solid var(--ok);border-radius:99px;padding:1px 8px}
+
+  .drop-zona{border:2px dashed var(--linea);border-radius:12px;padding:34px 20px;text-align:center;cursor:pointer;background:var(--papel-2);transition:border-color .15s,background .15s}
+  .drop-zona:hover{border-color:var(--ultramar)}
+  .drop-zona.dragover{border-color:var(--ultramar);background:#eef2fb}
+  .drop-zona .drop-ico{font-size:44px;line-height:1}
+  .drop-zona .drop-t{font-family:"Iowan Old Style",Palatino,Georgia,serif;font-size:20px;margin:10px 0 4px}
+  .drop-zona .drop-s{font-size:14px;color:var(--gris);margin:0}
 </style>
 </head>
 <body>
 
 <header>
   <div class="barra">
-    <h1>Estudio de acuarela <small id="resumen"></small><small style="color:var(--siena)">versión 17 · correcciones de fotos y Dropbox</small><small id="dbx-punto" title="Estado de Dropbox"></small></h1>
+    <h1>Estudio de acuarela <small id="resumen"></small><small style="color:var(--siena)">versión 19 · arrastrar fotos</small><small id="dbx-punto" title="Estado de Dropbox"></small></h1>
   </div>
   <nav role="tablist">
     <button role="tab" aria-selected="false" data-tab="inicio">Inicio</button>
@@ -716,6 +723,17 @@
     <div class="pie"><div class="der"><button type="button" class="btn sec" id="util-cerrar">Cerrar</button></div></div>
   </div>
 </dialog>
+<dialog id="dlg-drop">
+  <div class="hoja">
+    <h2>Añadir imagen</h2>
+    <div id="drop-zona" class="drop-zona">
+      <div class="drop-ico">🖼️</div>
+      <p class="drop-t">Arrastra aquí la foto</p>
+      <p class="drop-s">Desde la app <b>Fotos</b>, el Escritorio o cualquier ventana.<br>O haz clic para elegir un archivo del Mac.</p>
+    </div>
+    <div class="pie"><button type="button" class="btn sec" id="drop-cancelar">Cancelar</button><div class="der"><button type="button" class="btn" id="drop-elegir">Elegir archivo…</button></div></div>
+  </div>
+</dialog>
 <dialog id="dlg-origen">
   <div class="hoja" style="text-align:center">
     <h2>Añadir imagen</h2>
@@ -1140,11 +1158,32 @@ function elegirArchivoSimple(accept, capture){
   return new Promise(ok=>{ const i=document.createElement('input'); i.type='file'; i.accept=accept; if(capture) i.capture='environment'; i.onchange=()=>ok(i.files[0]||null); i.click(); });
 }
 // Pregunta el origen de la imagen (cámara o fototeca/archivos). Para PDF u otros, va directo.
+const esMac = /Macintosh|Mac OS X/i.test(navigator.userAgent) && !(('ontouchstart' in window)||navigator.maxTouchPoints>0);
+function elegirImagenMac(accept){
+  return new Promise(ok=>{
+    const d=document.getElementById('dlg-drop'), z=document.getElementById('drop-zona');
+    let resuelto=false; const fin=r=>{ if(resuelto) return; resuelto=true; limpiar(); try{d.close();}catch(e){} ok(r); };
+    const esImg=f=> f && (f.type.indexOf('image')===0 || /\.(png|jpe?g|gif|webp|heic|heif|tiff?|bmp)$/i.test(f.name));
+    const onDragOver=e=>{ e.preventDefault(); z.classList.add('dragover'); };
+    const onDragLeave=e=>{ e.preventDefault(); z.classList.remove('dragover'); };
+    const onDrop=e=>{ e.preventDefault(); z.classList.remove('dragover');
+      const f=[...(e.dataTransfer.files||[])].find(esImg); if(f) fin(f); else toast('Suelta un archivo de imagen'); };
+    const onClick=()=>{ elegirArchivoSimple(accept,false).then(f=>{ if(f) fin(f); }); };
+    const onCancel=()=>fin(null);
+    function limpiar(){ z.removeEventListener('dragover',onDragOver); z.removeEventListener('dragleave',onDragLeave); z.removeEventListener('drop',onDrop); z.removeEventListener('click',onClick); document.getElementById('drop-cancelar').removeEventListener('click',onCancel); document.getElementById('drop-elegir').removeEventListener('click',onClick); }
+    z.addEventListener('dragover',onDragOver); z.addEventListener('dragleave',onDragLeave); z.addEventListener('drop',onDrop); z.addEventListener('click',onClick);
+    document.getElementById('drop-cancelar').addEventListener('click',onCancel);
+    document.getElementById('drop-elegir').addEventListener('click',onClick);
+    d.showModal();
+  });
+}
 const esTactil = (('ontouchstart' in window) || (navigator.maxTouchPoints>0)) && /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 function elegirArchivo(accept, preferirCamara){
   const esImagen = accept && accept.indexOf('image')>-1 && accept.indexOf('pdf')===-1;
-  // En ordenador (sin cámara táctil) el selector normal ya permite Fotos, Descargas, etc.
-  if(!esImagen || !esTactil) return elegirArchivoSimple(accept,false);
+  // En Mac: aviso (una vez) de cómo sacar fotos de la app Fotos, y luego selector normal.
+  if(!esImagen) return elegirArchivoSimple(accept,false);
+  if(esMac) return elegirImagenMac(accept);
+  if(!esTactil) return elegirArchivoSimple(accept,false);
   return new Promise(ok=>{
     const d=document.getElementById('dlg-origen'); if(!d){ elegirArchivoSimple(accept,false).then(ok); return; }
     let resuelto=false; const fin=r=>{ if(resuelto) return; resuelto=true; ok(r); };
