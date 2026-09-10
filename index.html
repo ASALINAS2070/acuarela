@@ -7,6 +7,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <title>Estudio de acuarela — Tubos de pintura</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
   <!-- ICONOS -->
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZm9uZG8iIHgxPSIwIiB5MT0iMCIgeDI9IjAiIHkyPSIxIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjRjVGMEU0Ii8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjRTdERkNDIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogICAgPHJhZGlhbEdyYWRpZW50IGlkPSJwaW50dXJhIiBjeD0iNDIlIiBjeT0iMzglIiByPSI3MCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiM1QTg2QzgiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSI1NSUiIHN0b3AtY29sb3I9IiMyRTVBQTgiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjMUUzRTdFIi8+CiAgICA8L3JhZGlhbEdyYWRpZW50PgogICAgPGxpbmVhckdyYWRpZW50IGlkPSJnb2RldCIgeDE9IjAiIHkxPSIwIiB4Mj0iMCIgeTI9IjEiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiNGRkZGRkYiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiNEOURFRTMiLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgICA8cmFkaWFsR3JhZGllbnQgaWQ9ImJyaWxsbyIgY3g9IjM1JSIgY3k9IjMwJSIgcj0iNDUlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjRkZGRkZGIiBzdG9wLW9wYWNpdHk9IjAuNTUiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjRkZGRkZGIiBzdG9wLW9wYWNpdHk9IjAiLz4KICAgIDwvcmFkaWFsR3JhZGllbnQ+CiAgPC9kZWZzPgogIDxyZWN0IHdpZHRoPSI1MTIiIGhlaWdodD0iNTEyIiByeD0iMTEyIiBmaWxsPSJ1cmwoI2ZvbmRvKSIvPgogIDwhLS0gc2FscGljYWR1cmFzIGFscmVkZWRvciAtLT4KICA8ZyBmaWxsPSIjMkU1QUE4IiBvcGFjaXR5PSIwLjE0Ij4KICAgIDxjaXJjbGUgY3g9IjEyMCIgY3k9IjE1MCIgcj0iMTAiLz48Y2lyY2xlIGN4PSIxNTAiIGN5PSIxMjAiIHI9IjUiLz4KICAgIDxjaXJjbGUgY3g9IjM5OCIgY3k9IjM2MCIgcj0iMTIiLz48Y2lyY2xlIGN4PSIzNzIiIGN5PSIzOTIiIHI9IjYiLz4KICAgIDxjaXJjbGUgY3g9IjM5MiIgY3k9IjE0MCIgcj0iNyIvPjxjaXJjbGUgY3g9IjEzMCIgY3k9IjM4MCIgcj0iOCIvPgogIDwvZz4KICA8IS0tIHNvbWJyYSBkZWwgZ29kw6l0IC0tPgogIDxlbGxpcHNlIGN4PSIyNTYiIGN5PSIyNzIiIHJ4PSIxNTAiIHJ5PSIxNTAiIGZpbGw9IiMwMDAwMDAiIG9wYWNpdHk9IjAuMTAiLz4KICA8IS0tIGdvZMOpdCBleHRlcmlvciAobWVkaWEgcGFzdGlsbGEpIC0tPgogIDxjaXJjbGUgY3g9IjI1NiIgY3k9IjI2MiIgcj0iMTUwIiBmaWxsPSJ1cmwoI2dvZGV0KSIvPgogIDxjaXJjbGUgY3g9IjI1NiIgY3k9IjI2MiIgcj0iMTUwIiBmaWxsPSJub25lIiBzdHJva2U9IiNCOUMwQzciIHN0cm9rZS13aWR0aD0iMyIvPgogIDwhLS0gYm9yZGUgaW50ZXJpb3IgLS0+CiAgPGNpcmNsZSBjeD0iMjU2IiBjeT0iMjYyIiByPSIxMjYiIGZpbGw9IiNDOENFRDQiLz4KICA8IS0tIHBpbnR1cmEgc2VjYSBjb24gZGVzZ2FzdGUgLS0+CiAgPGNpcmNsZSBjeD0iMjU2IiBjeT0iMjYyIiByPSIxMTgiIGZpbGw9InVybCgjcGludHVyYSkiLz4KICA8IS0tIGh1ZWNvIGRvbmRlIHNlIGhhIG1vamFkbyBlbCBwaW5jZWwgKGNvbG9yIGxldmFudGFkbykgLS0+CiAgPHBhdGggZD0iTTI1NiAyNjIgbS03MCAtMTAgYTcyIDYyIDAgMSAwIDE0MCAxMiBhNzIgNjIgMCAxIDAgLTE0MCAtMTIgWiIgZmlsbD0iIzFFM0U3RSIgb3BhY2l0eT0iMC40NSIvPgogIDxlbGxpcHNlIGN4PSIyMzgiIGN5PSIyNDAiIHJ4PSI0NiIgcnk9IjM0IiBmaWxsPSIjMTIzMDVmIiBvcGFjaXR5PSIwLjUiLz4KICA8IS0tIHRleHR1cmEgZ3JhbnVsYWRhIC0tPgogIDxnIGZpbGw9IiMwZjIyNDciIG9wYWNpdHk9IjAuMzAiPgogICAgPGNpcmNsZSBjeD0iMjEwIiBjeT0iMjMwIiByPSI0Ii8+PGNpcmNsZSBjeD0iMjUwIiBjeT0iMjE1IiByPSIzIi8+PGNpcmNsZSBjeD0iMjkyIiBjeT0iMjM4IiByPSI0Ii8+CiAgICA8Y2lyY2xlIGN4PSIzMDAiIGN5PSIyODUiIHI9IjMiLz48Y2lyY2xlIGN4PSIyMzUiIGN5PSIzMDAiIHI9IjQiLz48Y2lyY2xlIGN4PSIxOTUiIGN5PSIyNzgiIHI9IjMiLz4KICAgIDxjaXJjbGUgY3g9IjI3NSIgY3k9IjI2MiIgcj0iMy41Ii8+PGNpcmNsZSBjeD0iMzIwIiBjeT0iMjU1IiByPSIzIi8+CiAgPC9nPgogIDwhLS0gYnJpbGxvIGjDum1lZG8gLS0+CiAgPGVsbGlwc2UgY3g9IjIyMCIgY3k9IjIxNSIgcng9IjcwIiByeT0iNDYiIGZpbGw9InVybCgjYnJpbGxvKSIvPgo8L3N2Zz4=">
   <link rel="apple-touch-icon" href="data:image/png;base64,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">
@@ -52,9 +53,9 @@
 
   /* lista de pinturas: la muestra de color es el elemento protagonista */
   .lista{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px}
-  .tubo{display:grid;grid-template-columns:64px 1fr;gap:12px;background:#fff;border:1px solid var(--linea);border-radius:var(--r);padding:10px;text-align:left;color:inherit;align-items:start}
+  .tubo{display:grid;grid-template-columns:56px 1fr;gap:12px;background:#fff;border:1px solid var(--linea);border-radius:var(--r);padding:10px;text-align:left;color:inherit;align-items:start}
   .tubo:hover{border-color:var(--ultramar)}
-  .muestra{width:64px;height:64px;border-radius:4px;position:relative;overflow:hidden;background:#ddd}
+  .muestra{width:56px;height:132px;border-radius:4px;position:relative;overflow:hidden;background:#ddd}
   .muestra::after{content:"";position:absolute;inset:0;background:
      radial-gradient(circle at 30% 30%,rgba(255,255,255,.35),transparent 55%),
      radial-gradient(circle at 75% 70%,rgba(0,0,0,.12),transparent 50%);mix-blend-mode:soft-light}
@@ -152,20 +153,50 @@
 
   .tienda{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid var(--linea);border-radius:99px;padding:5px 12px;font-size:14px;margin:3px 6px 3px 0;color:var(--ultramar);text-decoration:none}
   .tienda.fav{border-color:var(--siena);color:var(--siena)}
-  .pincel-forma{width:64px;height:64px;border-radius:4px;background:var(--papel-2);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--gris);text-align:center;padding:4px;overflow:hidden}
+  .pincel-forma{width:56px;height:92px;border-radius:4px;background:var(--papel-2);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--gris);text-align:center;padding:4px;overflow:hidden}
   .pincel-forma img{width:100%;height:100%;object-fit:cover}
   .colores-paleta{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
   .colores-paleta i{display:inline-block;width:22px;height:22px;border-radius:50%;border:1px solid rgba(0,0,0,.1)}
+  #pa-elegidos button{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid var(--linea);border-radius:99px;padding:3px 10px 3px 4px;font-size:13px;cursor:pointer;margin:0 4px 4px 0}
+  #pa-elegidos button i{width:18px;height:18px;border-radius:50%;display:inline-block;border:1px solid rgba(0,0,0,.1)}
+
+  .portada{position:relative;border-radius:12px;overflow:hidden;min-height:44vh;display:flex;align-items:flex-end;background:var(--papel-2);margin-bottom:18px}
+  .portada img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .portada .velo{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.55),rgba(0,0,0,0) 55%)}
+  .portada .titulo{position:relative;padding:22px 24px;color:#fff}
+  .portada .titulo h2{margin:0;font-size:30px;text-shadow:0 2px 8px rgba(0,0,0,.5)}
+  .portada .titulo p{margin:4px 0 0;font-size:15px;opacity:.95;text-shadow:0 1px 6px rgba(0,0,0,.5)}
+  .portada .cambiar{position:absolute;top:12px;right:12px;background:rgba(255,255,255,.9);border:0;border-radius:99px;padding:8px 14px;font-size:14px;cursor:pointer;z-index:2}
+  .portada .sin{position:relative;padding:40px 24px;color:var(--gris);text-align:center;width:100%}
+  .menu{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px}
+  .menu button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:#fff;border:1px solid var(--linea);border-radius:14px;padding:26px 14px;cursor:pointer;text-align:center;transition:border-color .15s,transform .05s,box-shadow .15s;min-height:130px}
+  .menu button:hover{border-color:var(--ultramar);box-shadow:0 4px 16px rgba(46,76,155,.10)}
+  .menu button:active{transform:scale(.98)}
+  .menu button .ico{font-size:40px;line-height:1}
+  .menu button .tit{font-family:"Iowan Old Style",Palatino,Georgia,serif;font-size:19px;letter-spacing:-.01em}
+  .menu button.salir{background:var(--papel-2)}
+  .portada{cursor:pointer}
+  .portada .titulo h2{font-size:34px}
+
+  .dup-grupo{border:1px solid var(--linea);border-radius:var(--r);margin:10px 0;overflow:hidden}
+  .dup-grupo>h4{margin:0;padding:8px 12px;background:var(--papel-2);font-family:"Iowan Old Style",Palatino,Georgia,serif;font-size:16px;font-weight:500}
+  .dup-fila{display:flex;align-items:center;gap:10px;padding:8px 12px;border-top:1px solid var(--linea)}
+  .dup-fila .mini{width:26px;height:26px;border-radius:4px;border:1px solid rgba(0,0,0,.12);flex:none}
+  .dup-fila .datos{flex:1;font-size:14px;min-width:0}
+  .dup-fila .datos .n{color:var(--gris);font-size:12px}
+  .dup-fila label{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--aviso);white-space:nowrap}
+  .dup-fila .conservar{color:var(--ok);font-size:12px;border:1px solid var(--ok);border-radius:99px;padding:1px 8px}
 </style>
 </head>
 <body>
 
 <header>
   <div class="barra">
-    <h1>Estudio de acuarela <small id="resumen"></small><small style="color:var(--siena)">versión 11 · tu tabla de 100 colores</small><small id="dbx-punto" title="Estado de Dropbox"></small></h1>
+    <h1>Estudio de acuarela <small id="resumen"></small><small style="color:var(--siena)">versión 16 · corrección inicio</small><small id="dbx-punto" title="Estado de Dropbox"></small></h1>
   </div>
   <nav role="tablist">
-    <button role="tab" aria-selected="true" data-tab="pinturas">Pinturas</button>
+    <button role="tab" aria-selected="false" data-tab="inicio">Inicio</button>
+    <button role="tab" aria-selected="false" data-tab="pinturas">Pinturas</button>
     <button role="tab" aria-selected="false" data-tab="pinceles">Pinceles</button>
     <button role="tab" aria-selected="false" data-tab="paletas">Paletas</button>
     <button role="tab" aria-selected="false" data-tab="obra">Obra</button>
@@ -177,6 +208,26 @@
 </header>
 
 <main>
+
+<!-- ================= INICIO ================= -->
+<section id="tab-inicio" class="oculto">
+  <div class="portada" id="portada">
+    
+    <div class="sin" id="portada-sin">Toca aquí para poner tu foto de portada</div>
+    <div class="velo oculto" id="portada-velo"></div>
+    <div class="titulo"><h2>Mi estudio de acuarela</h2></div>
+  </div>
+  <div class="menu">
+    <button data-ir="pinturas"><span class="ico"><svg viewBox="0 0 48 48" width="40" height="40" aria-hidden="true"><rect x="18" y="6" width="12" height="7" rx="1.5" fill="#9AA1A8"/><path d="M17 13h14v22a5 5 0 0 1-5 5h-4a5 5 0 0 1-5-5z" fill="#E7E0CE" stroke="#9A5B33" stroke-width="1.5"/><path d="M17 20h14v15a5 5 0 0 1-5 5h-4a5 5 0 0 1-5-5z" fill="#2E5AA8"/><rect x="21" y="2" width="6" height="5" rx="1.5" fill="#6E6A60"/></svg></span><span class="tit">Pinturas</span></button>
+    <button data-ir="pinceles"><span class="ico">🖌️</span><span class="tit">Pinceles</span></button>
+    <button data-ir="paletas"><span class="ico">🎨🖌️</span><span class="tit">Paletas</span></button>
+    <button data-ir="obra"><span class="ico">🖼️</span><span class="tit">Obra</span></button>
+    <button data-ir="biblio"><span class="ico">📚</span><span class="tit">Biblioteca</span></button>
+    <button id="btn-utilidades"><span class="ico">🧰</span><span class="tit">Utilidades</span></button>
+    <button class="salir" id="btn-salir"><span class="ico">🚪</span><span class="tit">Salir</span></button>
+  </div>
+</section>
+
 
 <!-- ================= PINTURAS ================= -->
 <section id="tab-pinturas">
@@ -199,7 +250,7 @@
     </select>
     <button class="btn" id="nuevo">+ Añadir pintura</button>
     <button class="btn sec" id="importar-colores">Importar Excel/CSV</button>
-    <button class="btn sec" id="cargar-mi-tabla">Cargar mis 100 colores</button>
+    <button class="btn sec" id="buscar-duplicados">Buscar duplicados</button>
     <input type="file" id="importar-colores-file" accept=".xlsx,.xls,.csv" class="oculto">
   </div>
   <p class="cuenta" id="cuenta"></p>
@@ -208,7 +259,8 @@
 
 <!-- ================= CATÁLOGO ================= -->
 <section id="tab-catalogo" class="oculto">
-  <div class="nota"><strong>Catálogo de referencia</strong>: todos los colores de las cartas de las marcas, con sus características. Toca un color para añadirlo a tus tubos con los datos ya rellenados. Daniel Smith y Schmincke proceden de las cartas oficiales; en las demás marcas los datos son orientativos y llevan la marca «por verificar» hasta que los compruebes en su carta.</div>
+  <div class="nota"><strong>Catálogo de referencia</strong>: todos los colores de las cartas de las marcas. Toca un color para añadirlo a tus tubos con los datos ya rellenados. Daniel Smith y Schmincke proceden de las cartas oficiales; en las demás marcas los datos son orientativos.</div>
+  <p style="margin:0 0 10px"><button class="btn sec" id="cat-pdf">Importar carta en PDF…</button> <input type="file" id="cat-pdf-file" accept="application/pdf" class="oculto"></p>
   <div class="herr">
     <input type="search" id="c-buscar" placeholder="Buscar por nombre o pigmento…" autocomplete="off">
     <select id="c-marca"><option value="">Todas las marcas</option></select>
@@ -269,22 +321,16 @@
       <div><label>Medidas (cm)</label><input name="medidas" placeholder="38 × 56"></div>
       <div><label>Papel</label><input name="papel" placeholder="Arches 300 g grano fino"></div>
       <div><label>Estado</label><select name="estado"><option>En curso</option><option>Terminado</option><option>Vendido</option><option>Regalado</option><option>Abandonado</option></select></div>
-      <div class="ancho"><label>Propietario actual</label><input name="propietario" placeholder="Colección propia · Regalado a … · Vendido a …"></div>
-      <div class="ancho"><details><summary style="cursor:pointer;font-size:14px;color:var(--siena)">Datos reservados (precio y fecha de venta)</summary>
-        <div class="campos" style="margin-top:8px">
-          <div><label>Precio de venta</label><input name="precio" placeholder="350 €"></div>
-          <div><label>Fecha de venta</label><input name="fechaVenta" type="date"></div>
-          <div class="ancho"><label>Notas reservadas</label><input name="notasReservadas" placeholder="Comprador, forma de pago, comisión de la sala…"></div>
-        </div></details></div>
       <div class="ancho"><label>Colores usados (de mis tubos)</label>
-        <input type="search" id="paleta-buscar" placeholder="Filtrar mis colores…" autocomplete="off" style="margin-bottom:6px">
+        <input type="search" id="paleta-buscar" placeholder="Buscar en mis tubos para añadir…" autocomplete="off" style="margin-bottom:6px">
         <div class="lista-check" id="paleta-obra"></div></div>
       <div class="ancho"><label>Otros colores o mezclas (texto libre)</label><input name="paleta" placeholder="Gris de Payne de otro tubo, mezcla ultramar + siena…"></div>
       <div class="ancho"><label>Notas</label><textarea name="notas" placeholder="Lugar, referencia fotográfica, qué aprendí…"></textarea></div>
+      <div class="ancho nota" id="obra-hint-fotos" style="margin:2px 0 0">Tras guardar se abrirá el cuadro para que añadas las fotos de su evolución con «📷 Foto de progreso».</div>
     </div>
     <div class="pie">
       <button type="button" class="btn peligro oculto" id="eliminar-obra">Eliminar cuadro</button>
-      <div class="der"><button type="button" class="btn sec" id="cancelar-obra">Cancelar</button><button type="submit" class="btn">Guardar</button></div>
+      <div class="der"><button type="button" class="btn sec" id="cancelar-obra">Cancelar</button><button type="submit" class="btn">Guardar y añadir fotos</button></div>
     </div>
   </form>
 </dialog>
@@ -350,7 +396,8 @@
     <h2 id="dlg-foto-ref-titulo">Foto para pintar</h2>
     <input type="hidden" name="id">
     <div class="grande" id="fr-img" style="margin-bottom:8px"></div>
-    <p><button type="button" class="btn sec" id="fr-cambiar">📷 Hacer o elegir foto</button></p>
+    <div class="pasos" id="fr-fotos"></div>
+    <p><button type="button" class="btn sec" id="fr-cambiar">📷 Añadir foto (cámara o fototeca)</button></p>
     <div class="campos">
       <div class="ancho"><label>Título</label><input name="titulo" required placeholder="Ría de Vigo desde el muelle"></div>
       <div><label>Tipo</label><select name="tipo"><option>Foto de referencia</option><option>Apunte del natural</option></select></div>
@@ -490,9 +537,12 @@
       <div><label>Material</label><input name="material" list="materiales" placeholder="Cerámica, metal esmaltado…"><datalist id="materiales"><option>Cerámica</option><option>Porcelana</option><option>Metal esmaltado</option><option>Policarbonato</option><option>Plástico</option><option>Aluminio</option><option>Latón</option></datalist></div>
       <div><label>Número de huecos</label><input name="huecos" type="number" min="0"></div>
       <div><label>Medidas</label><input name="medidas" placeholder="12 × 8 cm"></div>
-      <div class="ancho"><label>Colores elegidos para esta paleta (de mis tubos)</label>
-        <input type="search" id="pa-col-buscar" placeholder="Filtrar mis colores…" autocomplete="off" style="margin-bottom:6px">
-        <div class="lista-check" id="pa-colores" style="max-height:240px"></div></div>
+      <div class="ancho"><label>Colores de esta paleta (toca uno para ver su ficha)</label>
+        <div class="colores-paleta" id="pa-elegidos" style="margin-bottom:8px"></div>
+        <details id="pa-elegir"><summary style="cursor:pointer;font-size:14px;color:var(--ultramar)">Elegir colores de mis tubos…</summary>
+          <input type="search" id="pa-col-buscar" placeholder="Buscar en mis tubos para añadir…" autocomplete="off" style="margin:8px 0 6px">
+          <div class="lista-check" id="pa-colores" style="max-height:300px"></div>
+        </details></div>
       <div class="ancho"><label>Fotos de la paleta</label><div class="pasos" id="paleta-fotos"></div><button type="button" class="btn sec" id="paleta-foto">📷 Añadir foto</button></div>
       <div class="ancho"><label>Comentarios (cómo limpiarla, orden de los colores, para qué la uso…)</label><textarea name="comentarios" style="min-height:100px"></textarea></div>
     </div>
@@ -572,6 +622,7 @@
     <div class="pie">
       <button type="button" class="btn peligro oculto" id="eliminar">Eliminar</button>
       <div class="der">
+        <button type="button" class="btn sec oculto" id="volver-paleta">← Volver a la paleta</button>
         <button type="button" class="btn sec" id="pintura-tienda">Buscar en tienda</button>
         <button type="button" class="btn sec" id="cancelar">Cancelar</button>
         <button type="submit" class="btn">Guardar pintura</button>
@@ -603,7 +654,40 @@
   </form>
 </dialog>
 
-<dialog id="dlg-ver" class="ancho"><div class="hoja ficha"><div class="grande" id="ver-img"></div><div class="pie-img"><span id="ver-txt"></span><span><button class="btn peligro" id="ver-borrar" style="padding:4px 10px;font-size:13px">Quitar foto</button> <button class="btn sec" id="ver-cerrar" style="padding:4px 10px;font-size:13px">Cerrar</button></span></div></div></dialog>
+<dialog id="dlg-ver" class="ancho"><div class="hoja ficha"><div class="grande" id="ver-img"></div><div class="pie-img"><span id="ver-txt"></span><span><button class="btn sec oculto" id="ver-portada" style="padding:4px 10px;font-size:13px">Hacer portada</button> <button class="btn peligro" id="ver-borrar" style="padding:4px 10px;font-size:13px">Quitar foto</button> <button class="btn sec" id="ver-cerrar" style="padding:4px 10px;font-size:13px">Cerrar</button></span></div></div></dialog>
+<dialog id="dlg-dups" class="ancho">
+  <div class="hoja">
+    <h2>Colores duplicados</h2>
+    <div class="herr" style="margin-bottom:8px">
+      <label style="font-size:14px;color:var(--gris);display:flex;align-items:center;gap:8px">Criterio:
+        <select id="dup-criterio" style="width:auto">
+          <option value="mnp">Marca + nombre + pigmentos (estricto)</option>
+          <option value="mn">Marca + nombre</option>
+          <option value="n">Solo nombre</option>
+        </select>
+      </label>
+    </div>
+    <div class="nota" id="dup-info"></div>
+    <div id="dup-lista" style="max-height:52vh;overflow:auto"></div>
+    <div class="pie">
+      <button type="button" class="btn peligro oculto" id="dup-eliminar">Eliminar los marcados</button>
+      <div class="der"><button type="button" class="btn sec" id="dup-cerrar">Cerrar</button></div>
+    </div>
+  </div>
+</dialog>
+<dialog id="dlg-cat-pdf" class="ancho">
+  <div class="hoja">
+    <h2>Importar carta de colores en PDF</h2>
+    <div class="nota" id="catpdf-info">Selecciona el PDF de la carta oficial. La aplicación leerá el texto y detectará posibles colores (nombre y pigmento). Revisa y marca cuáles añadir. Es una ayuda: las cartas son muy visuales, así que puede fallar en algunas líneas; siempre puedes editar cada ficha después.</div>
+    <div class="campos">
+      <div><label>Marca para estos colores</label><select id="catpdf-marca"></select></div>
+      <div><label>Familia por defecto</label><select id="catpdf-familia"></select></div>
+    </div>
+    <p class="cuenta" id="catpdf-estado" style="margin-top:8px"></p>
+    <div id="catpdf-lista" style="max-height:44vh;overflow:auto;border:1px solid var(--linea);border-radius:var(--r);padding:6px;display:none"></div>
+    <div class="pie"><div class="der"><button type="button" class="btn sec" id="catpdf-cancelar">Cerrar</button><button type="button" class="btn oculto" id="catpdf-anadir">Añadir seleccionados</button></div></div>
+  </div>
+</dialog>
 <dialog id="dlg-import" class="ancho">
   <div class="hoja">
     <h2>Importar colores</h2>
@@ -619,6 +703,26 @@
     <h3 class="serif" style="font-size:16px;margin:16px 0 6px">Vista previa (primeras filas)</h3>
     <div style="overflow:auto;border:1px solid var(--linea);border-radius:var(--r)"><table id="imp-preview" style="border-collapse:collapse;font-size:13px;width:100%"></table></div>
     <div class="pie"><div class="der"><button type="button" class="btn sec" id="imp-cancelar">Cancelar</button><button type="button" class="btn" id="imp-confirmar">Importar</button></div></div>
+  </div>
+</dialog>
+<dialog id="dlg-utilidades">
+  <div class="hoja">
+    <h2>Utilidades</h2>
+    <div class="menu" style="margin-top:6px">
+      <button data-ir="marcas"><span class="ico">🏬</span><span class="tit">Marcas y tiendas</span></button>
+      <button data-ir="catalogo"><span class="ico">📖</span><span class="tit">Catálogo de marcas</span></button>
+      <button data-ir="datos"><span class="ico">☁️</span><span class="tit">Sincronización y copias</span></button>
+    </div>
+    <div class="pie"><div class="der"><button type="button" class="btn sec" id="util-cerrar">Cerrar</button></div></div>
+  </div>
+</dialog>
+<dialog id="dlg-origen">
+  <div class="hoja" style="text-align:center">
+    <h2>Añadir imagen</h2>
+    <p style="color:var(--gris);font-size:14px;margin:-6px 0 14px">¿De dónde quieres tomar la imagen?</p>
+    <p><button type="button" class="btn" id="origen-camara" style="min-width:220px">📷 Hacer una foto</button></p>
+    <p><button type="button" class="btn sec" id="origen-galeria" style="min-width:220px">🖼️ Fototeca o Archivos</button></p>
+    <p style="margin-top:12px"><button type="button" class="btn sec" id="origen-cancelar">Cancelar</button></p>
   </div>
 </dialog>
 <div class="aviso-guardado" id="toast">Guardado</div>
@@ -708,9 +812,11 @@ const nombreMarca = id => (datos.marcas.find(m=>m.id===id)||{}).nombre || id || 
 const ORDEN_FAMILIA = ['Amarillo','Naranja','Rojo','Rosa / Magenta','Violeta','Azul','Verde','Tierra','Gris / Negro','Blanco','Otro'];
 
 /* ---------- pestañas ---------- */
+const TABS=['inicio','pinturas','catalogo','marcas','datos','obra','biblio','pinceles','paletas'];
+function irA(tab){ const b=$$('nav [data-tab]').find(x=>x.dataset.tab===tab); if(b) b.click(); }
 $$('nav [data-tab]').forEach(b=>b.addEventListener('click',()=>{
   $$('nav [data-tab]').forEach(x=>x.setAttribute('aria-selected',x===b));
-  ['pinturas','catalogo','marcas','datos','obra','biblio','pinceles','paletas'].forEach(t=>$('#tab-'+t).classList.toggle('oculto',t!==b.dataset.tab));
+  TABS.forEach(t=>$('#tab-'+t).classList.toggle('oculto',t!==b.dataset.tab));
 }));
 
 /* ---------- lista de pinturas ---------- */
@@ -786,7 +892,7 @@ $('#lista').addEventListener('click',e=>{ const b=e.target.closest('.tubo'); if(
 /* ---------- formulario de pintura ---------- */
 const dlg=$('#dlg'), form=$('#form');
 $('#nuevo').addEventListener('click',()=>abrirPintura(null));
-$('#cancelar').addEventListener('click',()=>dlg.close());
+$('#cancelar').addEventListener('click',()=>{ dlg.close(); document.getElementById('volver-paleta')?.classList.add('oculto'); paletaEnEdicion=null; });
 function abrirPintura(id){
   const p = id ? datos.pinturas.find(x=>x.id===id) : null;
   form.reset();
@@ -989,7 +1095,10 @@ function pintarCat(){
 $('#c-lista').addEventListener('click',e=>{
   const b=e.target.closest('.tubo'); if(!b) return;
   const c=CATALOGO[+b.dataset.i];
-  if(modoCatalogo==='elegir'){ modoCatalogo='ver'; $$('nav [data-tab]')[0].click(); abrirPintura(null); rellenarDesdeCat(c); }
+  modoCatalogo='ver';
+  const existente=datos.pinturas.find(p=>p.marca===c.marca && (p.nombreEn||'').toLowerCase()===c.en.toLowerCase());
+  $$('nav [data-tab]')[0].click();
+  if(existente){ abrirPintura(existente.id); toast('Ya tienes este color: editando tu ficha'); }
   else { abrirPintura(null); rellenarDesdeCat(c); }
 });
 function rellenarDesdeCat(c){
@@ -1026,8 +1135,21 @@ function reducirImagen(file, max=1600){
     }; img.onerror=()=>ok(file); img.src=URL.createObjectURL(file);
   });
 }
-function elegirArchivo(accept, capture){
+function elegirArchivoSimple(accept, capture){
   return new Promise(ok=>{ const i=document.createElement('input'); i.type='file'; i.accept=accept; if(capture) i.capture='environment'; i.onchange=()=>ok(i.files[0]||null); i.click(); });
+}
+// Pregunta el origen de la imagen (cámara o fototeca/archivos). Para PDF u otros, va directo.
+function elegirArchivo(accept, preferirCamara){
+  const esImagen = accept && accept.indexOf('image')>-1 && accept.indexOf('pdf')===-1;
+  if(!esImagen) return elegirArchivoSimple(accept,false);
+  return new Promise(ok=>{
+    const d=document.getElementById('dlg-origen'); if(!d){ elegirArchivoSimple(accept,false).then(ok); return; }
+    let resuelto=false; const fin=r=>{ if(resuelto) return; resuelto=true; ok(r); };
+    d._camara.onclick=()=>{ d.close(); elegirArchivoSimple(accept,true).then(fin); };
+    d._galeria.onclick=()=>{ d.close(); elegirArchivoSimple(accept,false).then(fin); };
+    d._cancelar.onclick=()=>{ d.close(); fin(null); };
+    d.showModal();
+  });
 }
 const hoy=()=>new Date().toISOString().slice(0,10);
 const fechaBonita=f=>f?new Date(f+'T12:00').toLocaleDateString('es-ES',{day:'numeric',month:'short',year:'numeric'}):'';
@@ -1066,28 +1188,35 @@ function abrirFormObra(id){
   formO.reset(); $('#dlg-obra-titulo').textContent=o?'Datos del cuadro':'Nuevo cuadro'; $('#eliminar-obra').classList.toggle('oculto',!o);
   if(o) for(const [k,v] of Object.entries(o)){ const el=formO.elements[k]; if(el && typeof v!=='object') el.value=v??''; }
   else formO.elements.inicio.value=hoy();
-  formO._sel=o?[...(o.colores||[])]:[]; $('#paleta-buscar').value=''; pintarPaletaForm(formO._sel);
+  formO._sel=o?[...(o.colores||[])]:[]; $('#paleta-buscar').value=''; pintarPaletaForm();
   dlgOF.showModal();
 }
-function pintarPaletaForm(sel){
-  const q=$('#paleta-buscar').value.trim().toLowerCase();
-  const lista=[...datos.pinturas].sort((a,b)=>{const d=ORDEN_FAMILIA.indexOf(a.familia)-ORDEN_FAMILIA.indexOf(b.familia); return d||a.nombreEs.localeCompare(b.nombreEs,'es');});
-  const marcados=new Set(sel);
-  $('#paleta-obra').innerHTML = lista.length ? lista.filter(p=>!q||(p.nombreEs+' '+p.nombreEn+' '+nombreMarca(p.marca)).toLowerCase().includes(q)).map(p=>`<label><input type="checkbox" value="${esc(p.id)}" ${marcados.has(p.id)?'checked':''}><span class="mini" style="background:${esc(p.swatch||'#ccc')}"></span>${esc(p.nombreEs)} <span style="color:var(--gris);font-size:12px">${esc(nombreMarca(p.marca))}</span></label>`).join('')||'<span style="font-size:13px;color:var(--gris)">Ningún color coincide.</span>'
-    : '<span style="font-size:13px;color:var(--gris)">Todavía no tienes pinturas registradas. Añádelas en la pestaña Pinturas.</span>';
+function pintarPaletaForm(){
+  if(!datos.pinturas.length){ $('#paleta-obra').innerHTML='<span style="font-size:13px;color:var(--gris)">Todavía no tienes pinturas registradas. Añádelas en la pestaña Pinturas.</span>'; return; }
+  const q=$('#paleta-buscar').value.trim().toLowerCase(); const sel=formO._sel||[];
+  const orden=a=>ORDEN_FAMILIA.indexOf(a.familia);
+  const fila=(p,marc)=>`<label><input type="checkbox" value="${esc(p.id)}" ${marc?'checked':''}><span class="mini" style="background:${esc(p.swatch||'#ccc')}"></span>${esc(p.nombreEs)} <span style="color:var(--gris);font-size:12px">${esc(nombreMarca(p.marca))}</span></label>`;
+  if(q){
+    const cand=[...datos.pinturas].filter(p=>(p.nombreEs+' '+p.nombreEn+' '+nombreMarca(p.marca)).toLowerCase().includes(q)).sort((a,b)=>orden(a)-orden(b)||a.nombreEs.localeCompare(b.nombreEs,'es'));
+    $('#paleta-obra').innerHTML = cand.length ? cand.map(p=>fila(p,sel.includes(p.id))).join('') : '<span style="font-size:13px;color:var(--gris)">Ningún color coincide.</span>';
+  } else {
+    const eleg=sel.map(id=>datos.pinturas.find(p=>p.id===id)).filter(Boolean).sort((a,b)=>orden(a)-orden(b)||a.nombreEs.localeCompare(b.nombreEs,'es'));
+    $('#paleta-obra').innerHTML = eleg.length ? eleg.map(p=>fila(p,true)).join('') : '<span style="font-size:13px;color:var(--gris)">Aún no has elegido colores. Escribe arriba para buscar en tus tubos y márcalos.</span>';
+  }
 }
-$('#paleta-buscar').addEventListener('input',()=>{ const sel=$$('#paleta-obra input:checked').map(i=>i.value); const prev=formO._sel||[]; pintarPaletaForm([...new Set([...prev.filter(id=>!$$('#paleta-obra input').some(i=>i.value===id)),...sel])]); formO._sel=$$('#paleta-obra input:checked').map(i=>i.value); });
-$('#paleta-obra').addEventListener('change',()=>{ const vis=$$('#paleta-obra input'); const prev=formO._sel||[]; formO._sel=[...new Set([...prev.filter(id=>!vis.some(i=>i.value===id)),...vis.filter(i=>i.checked).map(i=>i.value)])]; });
+$('#paleta-buscar').addEventListener('input',pintarPaletaForm);
+$('#paleta-obra').addEventListener('change',e=>{ const s=new Set(formO._sel||[]); if(e.target.checked) s.add(e.target.value); else s.delete(e.target.value); formO._sel=[...s]; if(!$('#paleta-buscar').value.trim()) pintarPaletaForm(); });
 formO.addEventListener('submit',e=>{
   e.preventDefault();
   const d={}; for(const el of formO.elements){ if(el.name) d[el.name]=el.value.trim(); }
-  const vis=$$('#paleta-obra input'); const prev=formO._sel||[]; d.colores=[...new Set([...prev.filter(id=>!vis.some(i=>i.value===id)),...vis.filter(i=>i.checked).map(i=>i.value)])];
+  d.colores=[...(formO._sel||[])];
   formO._sel=null;
   let o=d.id?datos.obras.find(x=>x.id===d.id):null;
   if(!o){ o={id:uid(),pasos:[],final:null}; datos.obras.push(o); }
   Object.assign(o,d);
   if(o.estado!=='En curso' && !o.fin) o.fin=hoy();
-  dlgOF.close(); guardar('Cuadro guardado'); pintarObra(); if($('#dlg-obra').open) abrirFicha(o.id);
+  const esNuevo=!d.id;
+  dlgOF.close(); guardar('Cuadro guardado'); pintarObra(); if(esNuevo || $('#dlg-obra').open) abrirFicha(o.id);
 });
 $('#eliminar-obra').addEventListener('click',async()=>{
   const id=formO.elements.id.value, o=datos.obras.find(x=>x.id===id);
@@ -1116,20 +1245,17 @@ async function abrirFicha(id, paso){
       <span>${act&&act.tipo==='paso'?`<button class="btn sec" id="editar-paso" style="padding:4px 10px;font-size:13px">Editar</button> <button class="btn peligro" id="borrar-paso" style="padding:4px 10px;font-size:13px">Quitar foto</button>`:''}</span></div>
     ${items.length?`<div class="pasos" id="pasos">${miniaturas.join('')}</div>`:''}
     <div class="acciones-obra">
-      <button class="btn" id="foto-progreso">📷 Foto de progreso</button>
+      <button class="btn" id="foto-progreso">📷 Añadir foto de progreso</button>
       <button class="btn sec" id="foto-final">${o.final?'Cambiar foto final':'Foto final y terminar'}</button>
       <button class="btn sec" id="editar-obra">Datos del cuadro</button>
       <button class="btn sec" id="cerrar-ficha">Cerrar</button>
     </div>
     ${(o.colores||[]).length?`<div class="datos-obra"><b>Colores usados:</b></div><div class="paleta-usada">${o.colores.map(id=>{const p=datos.pinturas.find(x=>x.id===id);return p?`<span><i class="mini" style="display:inline-block;width:18px;height:18px;border-radius:50%;background:${esc(p.swatch||'#ccc')}"></i>${esc(p.nombreEs)}</span>`:'';}).join('')}</div>`:''}
     ${o.paleta?`<p class="datos-obra"><b>Otros:</b> ${esc(o.paleta)}</p>`:''}
-    ${o.propietario?`<p class="datos-obra"><b>Propietario:</b> ${esc(o.propietario)}</p>`:''}
-    ${(o.precio||o.fechaVenta||o.notasReservadas)?`<p><button class="btn sec" id="ver-reservado" style="padding:5px 10px;font-size:13px">Mostrar datos reservados</button></p><p class="datos-obra oculto" id="reservado" style="background:var(--papel-2);padding:8px 10px;border-radius:var(--r)">${o.precio?`<b>Precio:</b> ${esc(o.precio)} `:''}${o.fechaVenta?`· <b>Vendido el</b> ${fechaBonita(o.fechaVenta)} `:''}${o.notasReservadas?`<br>${esc(o.notasReservadas)}`:''}</p>`:''}
     ${o.notas?`<p class="datos-obra">${esc(o.notas).replace(/\n/g,'<br>')}</p>`:''}
     ${expos.length?`<p class="datos-obra"><b>Expuesto en:</b> ${expos.map(x=>esc(x.nombre)+(x.inicio?' ('+x.inicio.slice(0,4)+')':'')).join(', ')}</p>`:''}`;
   if(!dlgO.open) dlgO.showModal();
   $('#cerrar-ficha').onclick=()=>dlgO.close();
-  $('#ver-reservado')?.addEventListener('click',e=>{ const r=$('#reservado'); r.classList.toggle('oculto'); e.target.textContent=r.classList.contains('oculto')?'Mostrar datos reservados':'Ocultar datos reservados'; });
   $('#editar-obra').onclick=()=>abrirFormObra(id);
   $('#pasos')?.addEventListener('click',e=>{ const b=e.target.closest('.paso'); if(b) abrirFicha(id,+b.dataset.paso); });
   $('#foto-progreso').onclick=async()=>{
@@ -1233,8 +1359,8 @@ async function pintarBiblio(){
     lista.sort((a,b)=>(b.estrellas|0)-(a.estrellas|0)||(b.fecha||'').localeCompare(a.fecha||''));
     $('#b-cuenta').textContent=`${lista.length} de ${datos.fotosRef.length}`;
     if(!lista.length){ $('#b-fotos').innerHTML='<div class="vacio" style="grid-column:1/-1">Aquí guardas las fotos de referencia y los apuntes del natural que quieras pintar en el estudio, con su valoración de 1 a 5 estrellas.</div>'; return; }
-    const t=await Promise.all(lista.map(async f=>`<button class="obra" data-fr="${esc(f.id)}"><div class="img">${f.foto?`<img src="${await urlDe(f.foto)}" alt="">`:'Sin imagen'}</div>
-      <div class="txt"><h3 class="serif">${esc(f.titulo)}</h3><div class="estrellas">${estrellas(f.estrellas|0)}</div><div class="meta">${esc(f.tipo==='Apunte del natural'?'Apunte':'Foto')} · ${esc(f.tema||'')}${f.lugar?' · '+esc(f.lugar):''}</div>${f.estado&&f.estado!=='Pendiente de pintar'?`<div class="meta">${esc(f.estado)}</div>`:''}</div></button>`));
+    const t=await Promise.all(lista.map(async f=>{ const port=(f.fotos&&f.fotos[0])||f.foto; const nf=(f.fotos&&f.fotos.length)||(f.foto?1:0); return `<button class="obra" data-fr="${esc(f.id)}"><div class="img">${port?`<img src="${await urlDe(port)}" alt="">`:'Sin imagen'}</div>
+      <div class="txt"><h3 class="serif">${esc(f.titulo)}</h3><div class="estrellas">${estrellas(f.estrellas|0)}</div><div class="meta">${esc(f.tipo==='Apunte del natural'?'Apunte':'Foto')} · ${esc(f.tema||'')}${f.lugar?' · '+esc(f.lugar):''}</div>${nf>1?`<div class="meta">${nf} fotos</div>`:''}${f.estado&&f.estado!=='Pendiente de pintar'?`<div class="meta">${esc(f.estado)}</div>`:''}</div></button>`; }));
     $('#b-fotos').innerHTML=t.join('');
   } else if(vistaB==='pintores'){
     const lista=datos.pintores.filter(p=>!q||[p.nombre,p.epoca,p.interes,p.notas].join(' ').toLowerCase().includes(q)).sort((a,b)=>a.nombre.localeCompare(b.nombre,'es'));
@@ -1275,14 +1401,26 @@ async function abrirFotoRef(id){
   formFR.reset(); $('#dlg-foto-ref-titulo').textContent=f?'Foto para pintar':'Nueva foto o apunte'; $('#fr-eliminar').classList.toggle('oculto',!f);
   $('#fr-obra').innerHTML='<option value="">—</option>'+datos.obras.map(o=>`<option value="${esc(o.id)}">${esc(o.titulo)}</option>`).join('');
   if(f) for(const [k,v] of Object.entries(f)){ const el=formFR.elements[k]; if(el) el.value=v??''; } else formFR.elements.fecha.value=hoy();
-  pintarEstrellas(f?(f.estrellas|0):3); formFR._foto=f?f.foto:null;
-  $('#fr-img').innerHTML=formFR._foto?`<img src="${await urlDe(formFR._foto)}" alt="">`:'<div class="vacia">Haz una foto o elige una de tu carrete.</div>';
+  pintarEstrellas(f?(f.estrellas|0):3);
+  formFR._fotos = f ? [...(f.fotos && f.fotos.length ? f.fotos : (f.foto?[f.foto]:[]))] : [];
+  await pintarFotosRef();
   dlgFR.showModal();
 }
-$('#fr-cambiar').addEventListener('click',async()=>{ const f=await elegirArchivo('image/*',true); if(!f) return; if(formFR._foto) await bd.borrar(formFR._foto); const id=uid(); await bd.guardar(id, await reducirImagen(f,2000)); formFR._foto=id; $('#fr-img').innerHTML=`<img src="${await urlDe(id)}" alt="">`; });
-formFR.addEventListener('submit',e=>{ e.preventDefault(); const d={}; for(const el of formFR.elements){ if(el.name) d[el.name]=el.value.trim(); } d.estrellas=+d.estrellas; d.foto=formFR._foto;
+async function pintarFotosRef(){
+  const grande=$('#fr-img'); const first=formFR._fotos[0];
+  grande.innerHTML = first ? `<img src="${await urlDe(first)}" alt="">` : '<div class="vacia">Añade una o varias fotos, con la cámara o desde la fototeca.</div>';
+  const t=await Promise.all(formFR._fotos.map(async (id,i)=>`<button type="button" class="paso ${i===0?'final':''}" data-vf="${i}"><img src="${await urlDe(id)}" alt=""><span>${i===0?'Portada':'Foto '+(i+1)}</span></button>`));
+  $('#fr-fotos').innerHTML=t.join('');
+}
+$('#fr-cambiar').addEventListener('click',async()=>{ const f=await elegirArchivo('image/*',true); if(!f) return; const id=uid(); await bd.guardar(id, await reducirImagen(f,2000)); formFR._fotos.push(id); await pintarFotosRef(); });
+$('#fr-fotos').addEventListener('click',async e=>{ const b=e.target.closest('[data-vf]'); if(!b) return; const i=+b.dataset.vf;
+  $('#ver-img').innerHTML=`<img src="${await urlDe(formFR._fotos[i])}" alt="">`; $('#ver-txt').textContent=(formFR.elements.titulo.value||'')+' — foto '+(i+1);
+  $('#ver-borrar').onclick=async()=>{ if(!confirm('¿Quitar esta foto?')) return; await bd.borrar(formFR._fotos[i]); formFR._fotos.splice(i,1); $('#dlg-ver').close(); await pintarFotosRef(); };
+  const extra=document.getElementById('ver-portada'); if(extra){ extra.classList.toggle('oculto', i===0); extra.onclick=async()=>{ const x=formFR._fotos.splice(i,1)[0]; formFR._fotos.unshift(x); $('#dlg-ver').close(); await pintarFotosRef(); }; }
+  $('#ver-cerrar').onclick=()=>$('#dlg-ver').close(); $('#dlg-ver').showModal(); });
+formFR.addEventListener('submit',e=>{ e.preventDefault(); const d={}; for(const el of formFR.elements){ if(el.name) d[el.name]=el.value.trim(); } d.estrellas=+d.estrellas; d.fotos=formFR._fotos||[]; d.foto=d.fotos[0]||null;
   let f=d.id?datos.fotosRef.find(x=>x.id===d.id):null; if(!f){ f={id:uid()}; datos.fotosRef.push(f); } Object.assign(f,d); dlgFR.close(); guardar('Guardado'); pintarBiblio(); });
-$('#fr-eliminar').addEventListener('click',async()=>{ const id=formFR.elements.id.value; if(!confirm('¿Eliminar esta foto?')) return; const f=datos.fotosRef.find(x=>x.id===id); if(f.foto) await bd.borrar(f.foto); datos.fotosRef=datos.fotosRef.filter(x=>x.id!==id); dlgFR.close(); guardar('Eliminada'); pintarBiblio(); });
+$('#fr-eliminar').addEventListener('click',async()=>{ const id=formFR.elements.id.value; if(!confirm('¿Eliminar esta ficha y sus fotos?')) return; const f=datos.fotosRef.find(x=>x.id===id); for(const ff of (f.fotos&&f.fotos.length?f.fotos:(f.foto?[f.foto]:[]))) await bd.borrar(ff); datos.fotosRef=datos.fotosRef.filter(x=>x.id!==id); dlgFR.close(); guardar('Eliminada'); pintarBiblio(); });
 const dlgP=$('#dlg-pintor'), formP=$('#form-pintor'), adjP=gestorAdjuntos('#pintor-adjunto','#pintor-adjuntos');
 $('#pintor-cancelar').addEventListener('click',()=>dlgP.close());
 function abrirPintor(id){ const p=id?datos.pintores.find(x=>x.id===id):null; formP.reset(); $('#dlg-pintor-titulo').textContent=p?p.nombre:'Nuevo pintor'; $('#pintor-eliminar').classList.toggle('oculto',!p);
@@ -1377,7 +1515,7 @@ function abrirPincel(id){
 }
 async function pintarFotosPincel(){ const t=await Promise.all(formP2._fotos.map(async (id,i)=>`<button type="button" class="paso" data-vf="${i}"><img src="${await urlDe(id)}" alt=""><span>Foto ${i+1}</span></button>`)); $('#pincel-fotos').innerHTML=t.join('')||'<span style="font-size:13px;color:var(--gris)">Sin fotos.</span>'; }
 $('#pincel-foto').addEventListener('click',async()=>{ const f=await elegirArchivo('image/*',true); if(!f) return; const id=uid(); await bd.guardar(id,await reducirImagen(f,1600)); formP2._fotos.push(id); pintarFotosPincel(); });
-$('#pincel-fotos').addEventListener('click',async e=>{ const b=e.target.closest('[data-vf]'); if(!b) return; const i=+b.dataset.vf; $('#ver-img').innerHTML=`<img src="${await urlDe(formP2._fotos[i])}" alt="">`; $('#ver-txt').textContent=formP2.elements.serie.value; $('#ver-borrar').onclick=async()=>{ if(!confirm('¿Quitar esta foto?')) return; await bd.borrar(formP2._fotos[i]); formP2._fotos.splice(i,1); $('#dlg-ver').close(); pintarFotosPincel(); }; $('#ver-cerrar').onclick=()=>$('#dlg-ver').close(); $('#dlg-ver').showModal(); });
+$('#pincel-fotos').addEventListener('click',async e=>{ const b=e.target.closest('[data-vf]'); if(!b) return; const i=+b.dataset.vf; document.getElementById('ver-portada')?.classList.add('oculto'); $('#ver-img').innerHTML=`<img src="${await urlDe(formP2._fotos[i])}" alt="">`; $('#ver-txt').textContent=formP2.elements.serie.value; $('#ver-borrar').onclick=async()=>{ if(!confirm('¿Quitar esta foto?')) return; await bd.borrar(formP2._fotos[i]); formP2._fotos.splice(i,1); $('#dlg-ver').close(); pintarFotosPincel(); }; $('#ver-cerrar').onclick=()=>$('#dlg-ver').close(); $('#dlg-ver').showModal(); });
 formP2.addEventListener('submit',e=>{ e.preventDefault(); const d={}; for(const el of formP2.elements){ if(el.name) d[el.name]=el.value.trim(); } d.fotos=formP2._fotos; d.cantidad=parseInt(d.cantidad||'1',10)||0;
   if(d.marca==='otra' && !d.marcaOtra){ d.marcaOtra=prompt('Nombre de la marca:')||'Otra'; }
   let p=d.id?datos.pinceles.find(x=>x.id===d.id):null; if(!p){ p={id:uid()}; datos.pinceles.push(p); } Object.assign(p,d); dlgP2.close(); guardar('Pincel guardado'); vistaP='mios'; $$('#tab-pinceles .sub button')[0].click(); pintarMarcasPinceles(); });
@@ -1398,13 +1536,46 @@ async function pintarPaletas(){
 $('#pa-lista').addEventListener('click',e=>{ const b=e.target.closest('[data-id]'); if(b) abrirPaleta(b.dataset.id); });
 const dlgPa=$('#dlg-paleta'), formPa=$('#form-paleta');
 $('#nueva-paleta').addEventListener('click',()=>abrirPaleta(null)); $('#cancelar-paleta').addEventListener('click',()=>dlgPa.close());
-function pintarColoresPaleta(){
-  const q=$('#pa-col-buscar').value.trim().toLowerCase(); const sel=new Set(formPa._sel||[]);
-  const lista=[...datos.pinturas].sort((a,b)=>{const d=ORDEN_FAMILIA.indexOf(a.familia)-ORDEN_FAMILIA.indexOf(b.familia); return d||a.nombreEs.localeCompare(b.nombreEs,'es');});
-  $('#pa-colores').innerHTML=lista.length?lista.filter(p=>!q||(p.nombreEs+' '+p.nombreEn+' '+nombreMarca(p.marca)).toLowerCase().includes(q)).map(p=>`<label><input type="checkbox" value="${esc(p.id)}" ${sel.has(p.id)?'checked':''}><span class="mini" style="background:${esc(p.swatch||'#ccc')}"></span>${esc(p.nombreEs)} <span style="color:var(--gris);font-size:12px">${esc(nombreMarca(p.marca))}</span></label>`).join('')||'<span style="font-size:13px;color:var(--gris)">Ningún color coincide.</span>':'<span style="font-size:13px;color:var(--gris)">Añade primero tus pinturas en la pestaña Pinturas.</span>';
+function pintarElegidosPaleta(){
+  const cont=document.getElementById('pa-elegidos'); const sel=formPa._sel||[];
+  if(!sel.length){ cont.innerHTML='<span style="font-size:13px;color:var(--gris)">Ningún color todavía. Abre «Elegir colores de mis tubos».</span>'; return; }
+  cont.innerHTML=sel.map(id=>{ const p=datos.pinturas.find(x=>x.id===id); if(!p) return ''; return `<button type="button" data-vercolor="${esc(id)}"><i style="background:${esc(p.swatch||'#ccc')}"></i>${esc(p.nombreEs)}</button>`; }).join('');
 }
+function fila_color_check(p,marcado){ return `<label><input type="checkbox" value="${esc(p.id)}" ${marcado?'checked':''}><span class="mini" style="background:${esc(p.swatch||'#ccc')}"></span>${esc(p.nombreEs)} <span style="color:var(--gris);font-size:12px">${esc(nombreMarca(p.marca))}</span></label>`; }
+function pintarColoresPaleta(){
+  pintarElegidosPaleta();
+  if(!datos.pinturas.length){ $('#pa-colores').innerHTML='<span style="font-size:13px;color:var(--gris)">Añade primero tus pinturas en la pestaña Pinturas.</span>'; return; }
+  const q=$('#pa-col-buscar').value.trim().toLowerCase(); const sel=formPa._sel||[];
+  const orden=a=>ORDEN_FAMILIA.indexOf(a.familia);
+  if(q){
+    const cand=[...datos.pinturas].filter(p=>(p.nombreEs+' '+p.nombreEn+' '+nombreMarca(p.marca)).toLowerCase().includes(q)).sort((a,b)=>orden(a)-orden(b)||a.nombreEs.localeCompare(b.nombreEs,'es'));
+    $('#pa-colores').innerHTML = cand.length ? cand.map(p=>fila_color_check(p,sel.includes(p.id))).join('') : '<span style="font-size:13px;color:var(--gris)">Ningún color coincide.</span>';
+  } else {
+    const elegidos=sel.map(id=>datos.pinturas.find(p=>p.id===id)).filter(Boolean).sort((a,b)=>orden(a)-orden(b)||a.nombreEs.localeCompare(b.nombreEs,'es'));
+    $('#pa-colores').innerHTML = elegidos.length ? elegidos.map(p=>fila_color_check(p,true)).join('') : '<span style="font-size:13px;color:var(--gris)">Aún no has elegido colores. Escribe arriba para buscar en tus tubos y márcalos.</span>';
+  }
+}
+document.getElementById('pa-elegidos').addEventListener('click',e=>{ const b=e.target.closest('[data-vercolor]'); if(!b) return;
+  volverAPaleta = formPa.elements.id.value || '__nueva__';
+  // guardar el estado de la paleta en edición para restaurarlo al volver
+  paletaEnEdicion = leerFormPaleta();
+  dlgPa.close(); abrirPintura(b.dataset.vercolor); marcarVueltaAPaleta();
+});
 $('#pa-col-buscar').addEventListener('input',pintarColoresPaleta);
 $('#pa-colores').addEventListener('change',e=>{ const s=new Set(formPa._sel||[]); if(e.target.checked) s.add(e.target.value); else s.delete(e.target.value); formPa._sel=[...s]; });
+let paletaEnEdicion=null, volverAPaleta=null;
+function leerFormPaleta(){ const d={}; for(const el of formPa.elements){ if(el.name) d[el.name]=el.value.trim(); } d.colores=[...(formPa._sel||[])]; d.fotos=[...(formPa._fotos||[])]; return d; }
+function marcarVueltaAPaleta(){ const b=document.getElementById('volver-paleta'); if(b) b.classList.remove('oculto'); }
+document.getElementById('volver-paleta').addEventListener('click',()=>{
+  dlg.close(); document.getElementById('volver-paleta').classList.add('oculto');
+  if(!paletaEnEdicion) return;
+  const est=paletaEnEdicion; paletaEnEdicion=null;
+  if(volverAPaleta && volverAPaleta!=='__nueva__') abrirPaleta(volverAPaleta); else abrirPaleta(null);
+  // restaurar lo que el usuario ya tenía escrito/seleccionado
+  for(const [k,v] of Object.entries(est)){ const el=formPa.elements[k]; if(el && typeof v!=='object') el.value=v??''; }
+  formPa._sel=[...(est.colores||[])]; formPa._fotos=[...(est.fotos||[])]; pintarColoresPaleta(); pintarFotosPaleta();
+  volverAPaleta=null;
+});
 function abrirPaleta(id){
   const p=id?datos.paletas.find(x=>x.id===id):null; formPa.reset(); $('#dlg-paleta-titulo').textContent=p?p.nombre:'Nueva paleta'; $('#eliminar-paleta').classList.toggle('oculto',!p);
   if(p) for(const [k,v] of Object.entries(p)){ const el=formPa.elements[k]; if(el&&typeof v!=='object') el.value=v??''; }
@@ -1469,7 +1640,7 @@ const dbx = {
     const ab={}; for(const a of [...(local.archivosBorrados||[]),...(remoto.archivosBorrados||[])]) ab[a.id]=Math.max(ab[a.id]||0,a.mod); res.archivosBorrados=Object.entries(ab).map(([id,mod])=>({id,mod})).slice(-2000);
     return res;
   },
-  idsReferenciados(){ const ids=new Set(); datos.pinturas.forEach(p=>(p.fotos||[]).forEach(f=>ids.add(f))); datos.obras.forEach(o=>{ o.pasos.forEach(p=>ids.add(p.foto)); if(o.final) ids.add(o.final); }); datos.exposiciones.forEach(x=>(x.adjuntos||[]).forEach(a=>ids.add(a.archivoId))); datos.fotosRef.forEach(f=>{ if(f.foto) ids.add(f.foto); }); [...datos.pintores,...datos.apuntes].forEach(x=>(x.adjuntos||[]).forEach(a=>ids.add(a.archivoId))); [...datos.pinceles,...datos.paletas].forEach(p=>(p.fotos||[]).forEach(f=>ids.add(f))); ids.delete(undefined); ids.delete(null); ids.delete(''); return ids; },
+  idsReferenciados(){ const ids=new Set(); datos.pinturas.forEach(p=>(p.fotos||[]).forEach(f=>ids.add(f))); datos.obras.forEach(o=>{ o.pasos.forEach(p=>ids.add(p.foto)); if(o.final) ids.add(o.final); }); datos.exposiciones.forEach(x=>(x.adjuntos||[]).forEach(a=>ids.add(a.archivoId))); datos.fotosRef.forEach(f=>{ if(f.foto) ids.add(f.foto); (f.fotos||[]).forEach(x=>ids.add(x)); }); [...datos.pintores,...datos.apuntes].forEach(x=>(x.adjuntos||[]).forEach(a=>ids.add(a.archivoId))); [...datos.pinceles,...datos.paletas].forEach(p=>(p.fotos||[]).forEach(f=>ids.add(f))); if(datos.ajustes&&datos.ajustes.portada) ids.add(datos.ajustes.portada); ids.delete(undefined); ids.delete(null); ids.delete(''); return ids; },
   programar(){ if(!this.conectado()) return; clearTimeout(this.timer); this.timer=setTimeout(()=>this.sincronizar(),4000); },
   async sincronizar(){
     if(!this.conectado()||this.ocupado) return; this.ocupado=true; clearTimeout(this.timer);
@@ -1501,7 +1672,7 @@ const dbx = {
 const aB64=b=>new Promise(ok=>{ const r=new FileReader(); r.onload=()=>ok(r.result.split(',')[1]); r.readAsDataURL(b); });
 $('#exportar-fotos').addEventListener('click',async()=>{
   toast('Preparando la copia con fotos…');
-  const ids=new Set(); datos.pinturas.forEach(p=>(p.fotos||[]).forEach(f=>ids.add(f))); datos.obras.forEach(o=>{ o.pasos.forEach(p=>ids.add(p.foto)); if(o.final) ids.add(o.final); }); datos.exposiciones.forEach(x=>(x.adjuntos||[]).forEach(a=>ids.add(a.archivoId))); datos.fotosRef.forEach(f=>{ if(f.foto) ids.add(f.foto); }); [...datos.pinceles,...datos.paletas].forEach(p=>(p.fotos||[]).forEach(f=>ids.add(f))); [...datos.pintores,...datos.apuntes].forEach(x=>(x.adjuntos||[]).forEach(a=>ids.add(a.archivoId)));
+  const ids=new Set(); datos.pinturas.forEach(p=>(p.fotos||[]).forEach(f=>ids.add(f))); datos.obras.forEach(o=>{ o.pasos.forEach(p=>ids.add(p.foto)); if(o.final) ids.add(o.final); }); datos.exposiciones.forEach(x=>(x.adjuntos||[]).forEach(a=>ids.add(a.archivoId))); datos.fotosRef.forEach(f=>{ if(f.foto) ids.add(f.foto); (f.fotos||[]).forEach(x=>ids.add(x)); }); [...datos.pinceles,...datos.paletas].forEach(p=>(p.fotos||[]).forEach(f=>ids.add(f))); [...datos.pintores,...datos.apuntes].forEach(x=>(x.adjuntos||[]).forEach(a=>ids.add(a.archivoId))); if(datos.ajustes&&datos.ajustes.portada) ids.add(datos.ajustes.portada);
   const archivos={}; for(const id of ids){ const b=await bd.leer(id); if(b) archivos[id]={tipo:b.type,b64:await aB64(b)}; }
   descargar(`acuarela-completa-${hoy()}.json`, JSON.stringify({...datos, archivos}), 'application/json');
 });
@@ -1614,25 +1785,154 @@ $('#imp-confirmar').addEventListener('click',()=>{
   alert(`Importados ${n} colores.`+(saltadas?` Se saltaron ${saltadas} filas sin nombre.`:'')+' Revisa marcas y opacidades; puedes editar cualquier ficha.');
 });
 
-/* ---------- carga directa de la tabla del usuario ---------- */
-const MIS_COLORES = [{"nombreEs": "ULTRAMARINO CLARO", "nombreEn": "ULTRAMARINE LIGHT", "marca": "Holbein", "familia": "Azul", "subfamilia": "Azul Cálido (Violáceo / Rojizo)", "pigmentos": "PB29", "pigmentoNombre": "", "opacidad": "Transparente", "permanencia": "", "tine": true, "granula": false, "lifting": "BAJA (FÁCIL LIFTING)", "serie": "A", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#2e4c9b", "notas": "Detalle tinción: SI: LIGERA"}, {"nombreEs": "AZUL COBALTO IMITACIÓN", "nombreEn": "COBALT BLUR HUE", "marca": "Holbein", "familia": "Azul", "subfamilia": "Azul Cálido (Violáceo / Rojizo)", "pigmentos": "PB29", "pigmentoNombre": "", "opacidad": "Transparente", "permanencia": "", "tine": false, "granula": false, "lifting": "BAJA (FÁCIL LIFTING)", "serie": "A", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#2e4c9b", "notas": ""}, {"nombreEs": "ULTRAMAR ULTRAFINO", "nombreEn": "ULTRAMARINE FINEST", "marca": "Schmincke", "familia": "Azul", "subfamilia": "Azul Cálido (Violáceo / Rojizo)", "pigmentos": "PB29", "pigmentoNombre": "", "opacidad": "Transparente", "permanencia": "", "tine": true, "granula": false, "lifting": "BAJA (FÁCIL LIFTING)", "serie": "", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#2e4c9b", "notas": "Detalle tinción: SI: LIGERA"}, {"nombreEs": "INDIGO", "nombreEn": "INDIGO", "marca": "Schmincke", "familia": "Azul", "subfamilia": "Azul Frío Oscuro (Índigo / Prusia)", "pigmentos": "PB15:1", "pigmentoNombre": "", "opacidad": "Semiopaco", "permanencia": "", "tine": false, "granula": false, "lifting": "ALTA (TIÑE EL PAPEL)", "serie": "2", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#12305f", "notas": ""}, {"nombreEs": "AZUL WINSOR SOMBRA VERDE", "nombreEn": "WINSOR BLUE (GREEN SHADE)", "marca": "Winsor & Newton", "familia": "Azul", "subfamilia": "Azul Frío (Cian / Verdoso)", "pigmentos": "PB15", "pigmentoNombre": "COPPER PHTHALOCYANINE", "opacidad": "Transparente", "permanencia": "", "tine": false, "granula": false, "lifting": "ALTA (TIÑE EL PAPEL)", "serie": "", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#0e5a8f", "notas": ""}, {"nombreEs": "ULTRAMAR FRANCÉS", "nombreEn": "FRENCH ULTRAMARINE", "marca": "Winsor & Newton", "familia": "Azul", "subfamilia": "Azul Cálido (Violáceo / Rojizo)", "pigmentos": "PB29", "pigmentoNombre": "COMPLEX SODIUM ALUMINIUM SILICATE", "opacidad": "Transparente", "permanencia": "I (excelente)", "tine": true, "granula": false, "lifting": "BAJA (FÁCIL LIFTING)", "serie": "2A", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#2e4c9b", "notas": "Detalle tinción: SI: ALTA"}, {"nombreEs": "AZUL PAVO REAL", "nombreEn": "PEACOCK BLUE", "marca": "Holbein", "familia": "Azul", "subfamilia": "Azul Frío (Cian / Verdoso)", "pigmentos": "PB15", "pigmentoNombre": "", "opacidad": "Transparente", "permanencia": "", "tine": false, "granula": false, "lifting": "ALTA (TIÑE EL PAPEL)", "serie": "A", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#0e5a8f", "notas": ""}, {"nombreEs": "AZUL DE PRUSIA", "nombreEn": "PRUSSIAN BLUE", "marca": "Winsor & Newton", "familia": "Azul", "subfamilia": "Azul Frío Oscuro (Índigo / Prusia)", "pigmentos": "PB27", "pigmentoNombre": "ALKALI FERRIFERROCYANIDE", "opacidad": "Transparente", "permanencia": "I (excelente)", "tine": false, "granula": false, "lifting": "ALTA (TIÑE EL PAPEL)", "serie": "1A", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#1b3a5c", "notas": ""}, {"nombreEs": "AZUL DE COBALTO", "nombreEn": "COBALT BLUE", "marca": "Holbein", "familia": "Azul", "subfamilia": "Azul Neutro", "pigmentos": "PB28", "pigmentoNombre": "", "opacidad": "Semitransparente", "permanencia": "", "tine": true, "granula": false, "lifting": "BAJA (FÁCIL LIFTING)", "serie": "D", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#2a5fb0", "notas": "Detalle tinción: SI: MEDIA"}, {"nombreEs": "AZUL REAL", "nombreEn": "BLUE ROYAL", "marca": "Sennelier", "familia": "Azul", "subfamilia": "Azul Cálido (Violáceo / Rojizo)", "pigmentos": "PB15:6", "pigmentoNombre": "", "opacidad": "Semiopaco", "permanencia": "I (excelente)", "tine": true, "granula": false, "lifting": "MEDIA", "serie": "1", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#0e5a8f", "notas": "Detalle tinción: Ligera"}, {"nombreEs": "ULTRAMAR SOMBRA VERDE", "nombreEn": "ULTRAMARINE (GREEN SHADE)", "marca": "Winsor & Newton", "familia": "Azul", "subfamilia": "Azul Frío (Cian / Verdoso)", "pigmentos": "PB29", "pigmentoNombre": "", "opacidad": "Transparente", "permanencia": "", "tine": true, "granula": false, "lifting": "BAJA (FÁCIL LIFTING)", "serie": "2A", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#2e4c9b", "notas": "Detalle tinción: SI: MEDIA"}, {"nombreEs": "AZUL DE AMBERES", "nombreEn": "ANTWERP BLUE", "marca": "Winsor & Newton", "familia": "Azul", "subfamilia": "Azul Frío Oscuro (Índigo / Prusia)", "pigmentos": "PB27", "pigmentoNombre": "ALKALI FERRIFERROCYANIDE", "opacidad": "Transparente", "permanencia": "", "tine": false, "granula": false, "lifting": "MEDIA", "serie": "1 A", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#1b3a5c", "notas": ""}, {"nombreEs": "AZUL CERÚLEO", "nombreEn": "CERULEAN BLUE", "marca": "Holbein", "familia": "Azul", "subfamilia": "Azul Frío (Cian / Verdoso)", "pigmentos": "PB35", "pigmentoNombre": "", "opacidad": "Semiopaco", "permanencia": "", "tine": true, "granula": false, "lifting": "BAJA (FÁCIL LIFTING)", "serie": "D", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#4d8fc2", "notas": "Detalle tinción: SI: ALTA"}, {"nombreEs": "AZUL DE MANGANESO TONO", "nombreEn": "MANGANESE BLUE HUE", "marca": "Winsor & Newton", "familia": "Azul", "subfamilia": "Azul Frío (Cian / Verdoso)", "pigmentos": "PB15", "pigmentoNombre": "COPPER PHTHALOCYANINE", "opacidad": "Transparente", "permanencia": "", "tine": true, "granula": false, "lifting": "MEDIA", "serie": "2 A", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#0e5a8f", "notas": "Detalle tinción: SI: MEDIA"}, {"nombreEs": "AZUL CERÚLEO", "nombreEn": "CERULEAN BLUE", "marca": "Winsor & Newton", "familia": "Azul", "subfamilia": "Azul Frío (Cian / Verdoso)", "pigmentos": "PB35", "pigmentoNombre": "COBALT STANNATE", "opacidad": "Semiopaco", "permanencia": "", "tine": true, "granula": false, "lifting": "BAJA (FÁCIL LIFTING)", "serie": "3AA", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#4d8fc2", "notas": "Detalle tinción: SI: ALTA"}, {"nombreEs": "TURQUESA DE COBALTO", "nombreEn": "COBALT TURQUOISE", "marca": "Winsor & Newton", "familia": "Azul", "subfamilia": "Azul Frío (Cian / Verdoso)", "pigmentos": "PB36", "pigmentoNombre": "COBALT CHROMIUM ALUMINIUM OXIDE", "opacidad": "Semiopaco", "permanencia": "", "tine": true, "granula": false, "lifting": "BAJA (FÁCIL LIFTING)", "serie": "4 AA", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#2f7f9a", "notas": "Detalle tinción: SI: ALTA"}, {"nombreEs": "AZUL COBALTO", "nombreEn": "COBALT BLUE", "marca": "Winsor & Newton", "familia": "Azul", "subfamilia": "Azul Neutro", "pigmentos": "PB28", "pigmentoNombre": "COBALT ALUMINATE", "opacidad": "Semitransparente", "permanencia": "", "tine": true, "granula": false, "lifting": "BAJA (FÁCIL LIFTING)", "serie": "4 AA", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#2a5fb0", "notas": "Detalle tinción: SI: MEDIA"}, {"nombreEs": "LAVANDA", "nombreEn": "LAVENDER", "marca": "Holbein", "familia": "Azul", "subfamilia": "Púrpura / Violeta Frío", "pigmentos": "PV15", "pigmentoNombre": "", "opacidad": "Opaco", "permanencia": "", "tine": true, "granula": false, "lifting": "BAJA (FÁCIL LIFTING)", "serie": "A", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#6a5aa0", "notas": "Detalle tinción: SI: LIGERA"}, {"nombreEs": "LAVANDA", "nombreEn": "LAVENDER", "marca": "Daniel Smith", "familia": "Azul", "subfamilia": "Púrpura / Violeta Frío", "pigmentos": "PV15", "pigmentoNombre": "PW6", "opacidad": "Opaco", "permanencia": "", "tine": true, "granula": false, "lifting": "BAJA (FÁCIL LIFTING)", "serie": "", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#6a5aa0", "notas": "Detalle tinción: SI: MEDIA"}, {"nombreEs": "AZUL DE PRUSIA", "nombreEn": "PRUSSIAN BLUE", "marca": "Daniel Smith", "familia": "Azul", "subfamilia": "Azul Frío Oscuro (Índigo / Prusia)", "pigmentos": "PB27", "pigmentoNombre": "", "opacidad": "Transparente", "permanencia": "", "tine": false, "granula": false, "lifting": "ALTA (TIÑE EL PAPEL)", "serie": "", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#1b3a5c", "notas": ""}, {"nombreEs": "WISTERIA - GLICINA", "nombreEn": "WISTERIA", "marca": "Daniel Smith", "familia": "Rojo", "subfamilia": "Rosa Cálido", "pigmentos": "PR122, PW6", "pigmentoNombre": "", "opacidad": "Opaco", "permanencia": "", "tine": false, "granula": false, "lifting": "BAJA (FÁCIL LIFTING)", "serie": "", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#d63c8c", "notas": ""}, {"nombreEs": "VIOLETA MINERAL", "nombreEn": "MINERAL VIOLET", "marca": "Holbein", "familia": "Violeta", "subfamilia": "Púrpura Neutro", "pigmentos": "PB29, PR122, PBr25", "pigmentoNombre": "", "opacidad": "Semitransparente", "permanencia": "", "tine": true, "granula": false, "lifting": "MEDIA", "serie": "B", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#d63c8c", "notas": "Detalle tinción: SI: MEDIA"}, {"nombreEs": "VIOLETA VIVO (LUMINOSO)", "nombreEn": "BRIGHT VIOLET (LUMINOUS)", "marca": "Holbein", "familia": "Violeta", "subfamilia": "Púrpura / Violeta Frío", "pigmentos": "No listado", "pigmentoNombre": "BV7,15", "opacidad": "Semiopaco", "permanencia": "", "tine": false, "granula": false, "lifting": "MEDIA", "serie": "B", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#6a4aa0", "notas": ""}, {"nombreEs": "VIOLETA DE QUINACRIDONA", "nombreEn": "QUINACRIDONE VIOLET", "marca": "Schmincke", "familia": "Violeta", "subfamilia": "Púrpura Neutro", "pigmentos": "PV19", "pigmentoNombre": "", "opacidad": "Transparente", "permanencia": "", "tine": false, "granula": false, "lifting": "ALTA (TIÑE EL PAPEL)", "serie": "2", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#c0304f", "notas": ""}, {"nombreEs": "ANARANJADO DE PIRROL", "nombreEn": "PYRROL ORANGE", "marca": "Daniel Smith", "familia": "Naranja", "subfamilia": "Naranja Cálido", "pigmentos": "PO73", "pigmentoNombre": "", "opacidad": "Semitransparente", "permanencia": "", "tine": false, "granula": false, "lifting": "ALTA (TIÑE EL PAPEL)", "serie": "", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#e9822a", "notas": ""}, {"nombreEs": "CARMESI ALIZARINA PERMANENTE", "nombreEn": "PERMANENT ALIZARIN CRIMSON", "marca": "Holbein", "familia": "Rojo", "subfamilia": "Rojo Frío (Carmín / Alizarina)", "pigmentos": "PV19", "pigmentoNombre": "", "opacidad": "Transparente", "permanencia": "", "tine": false, "granula": false, "lifting": "ALTA (TIÑE EL PAPEL)", "serie": "C", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#c0304f", "notas": ""}, {"nombreEs": "PARDO ROJO", "nombreEn": "LIGHT RED", "marca": "Holbein", "familia": "Rojo", "subfamilia": "Tierra Cálida (Sienas / Óxidos)", "pigmentos": "PR101", "pigmentoNombre": "", "opacidad": "Opaco", "permanencia": "", "tine": false, "granula": false, "lifting": "MEDIA", "serie": "A", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#9a3b25", "notas": ""}, {"nombreEs": "CARMÍN", "nombreEn": "CARMIN", "marca": "Holbein", "familia": "Rojo", "subfamilia": "Rojo Frío (Carmín / Alizarina)", "pigmentos": "PR83", "pigmentoNombre": "", "opacidad": "Transparente", "permanencia": "", "tine": false, "granula": false, "lifting": "MEDIA", "serie": "A", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#c42a2a", "notas": ""}, {"nombreEs": "ROSA OPERA", "nombreEn": "OPERA ROSE", "marca": "Winsor & Newton", "familia": "Rojo", "subfamilia": "Rosa Frío", "pigmentos": "PR122 (+ fluor)", "pigmentoNombre": "FLUORESCENT DYE/RESIN BASED PIGMENT", "opacidad": "Transparente", "permanencia": "", "tine": false, "granula": false, "lifting": "MEDIA", "serie": "2 B", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#d63c8c", "notas": ""}, {"nombreEs": "AMARILLO DE CADMIO NARANJA", "nombreEn": "CADMIUN YELOW ORANGE", "marca": "Holbein", "familia": "Naranja", "subfamilia": "Naranja Cálido", "pigmentos": "PR108", "pigmentoNombre": "PO20", "opacidad": "Opaco", "permanencia": "", "tine": false, "granula": false, "lifting": "MEDIA", "serie": "C", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#d3301f", "notas": ""}, {"nombreEs": "NARANJA TRANSPARENTE", "nombreEn": "TRANSLUCENT ORANGE", "marca": "Schmincke", "familia": "Naranja", "subfamilia": "Naranja Cálido", "pigmentos": "PO71", "pigmentoNombre": "PO71", "opacidad": "Transparente", "permanencia": "", "tine": false, "granula": false, "lifting": "ALTA (TIÑE EL PAPEL)", "serie": "2", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#e9822a", "notas": ""}, {"nombreEs": "ROJO WINSOR", "nombreEn": "WINSOR RED", "marca": "Winsor & Newton", "familia": "Rojo", "subfamilia": "Rojo Neutro", "pigmentos": "PR254", "pigmentoNombre": "", "opacidad": "Semitransparente", "permanencia": "", "tine": false, "granula": false, "lifting": "ALTA (TIÑE EL PAPEL)", "serie": "", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#c81f1f", "notas": ""}, {"nombreEs": "ROJO DE CADMIO CLARO", "nombreEn": "CADMIUN RED LIGHT", "marca": "Holbein", "familia": "Rojo", "subfamilia": "Rojo Cálido (Escarlata / Cadmio)", "pigmentos": "PR108", "pigmentoNombre": "", "opacidad": "Opaco", "permanencia": "", "tine": false, "granula": false, "lifting": "MEDIA", "serie": "E", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#d3301f", "notas": ""}, {"nombreEs": "ROJO DE CADMIO", "nombreEn": "CADMIUN RED", "marca": "Winsor & Newton", "familia": "Rojo", "subfamilia": "Rojo Cálido (Escarlata / Cadmio)", "pigmentos": "PR108", "pigmentoNombre": "", "opacidad": "Opaco", "permanencia": "", "tine": false, "granula": false, "lifting": "MEDIA", "serie": "4 A", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#d3301f", "notas": ""}, {"nombreEs": "ROJO QUINACRIDONA", "nombreEn": "QUINACRIDONE RED", "marca": "Winsor & Newton", "familia": "Rojo", "subfamilia": "Rosa Cálido", "pigmentos": "PR209", "pigmentoNombre": "", "opacidad": "Transparente", "permanencia": "", "tine": false, "granula": false, "lifting": "ALTA (TIÑE EL PAPEL)", "serie": "3 A", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#c42a2a", "notas": ""}, {"nombreEs": "ROSA PERMANENTE", "nombreEn": "PERMANENT ROSE", "marca": "Winsor & Newton", "familia": "Rojo", "subfamilia": "Rosa Frío", "pigmentos": "PV19", "pigmentoNombre": "", "opacidad": "Transparente", "permanencia": "", "tine": false, "granula": false, "lifting": "ALTA (TIÑE EL PAPEL)", "serie": "3 A", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#c0304f", "notas": ""}, {"nombreEs": "PARDO ROJO", "nombreEn": "LIGHT RED", "marca": "Winsor & Newton", "familia": "Rojo", "subfamilia": "Tierra Cálida (Sienas / Óxidos)", "pigmentos": "PR102", "pigmentoNombre": "", "opacidad": "Opaco", "permanencia": "", "tine": true, "granula": false, "lifting": "MEDIA", "serie": "1 AA", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#c42a2a", "notas": "Detalle tinción: SI: LIGERA"}, {"nombreEs": "CARMESÍ ALIZARINA PERMANENTE", "nombreEn": "PERMANENT ALIZARIN CRIMSON", "marca": "Winsor & Newton", "familia": "Rojo", "subfamilia": "Rojo Frío (Carmín / Alizarina)", "pigmentos": "PR206", "pigmentoNombre": "", "opacidad": "Transparente", "permanencia": "", "tine": false, "granula": false, "lifting": "MEDIA", "serie": "3 A", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#c42a2a", "notas": ""}, {"nombreEs": "VIOLETA DE COBALTO", "nombreEn": "COBALT VIOLET", "marca": "Winsor & Newton", "familia": "Violeta", "subfamilia": "Púrpura / Violeta Frío", "pigmentos": "PV14", "pigmentoNombre": "", "opacidad": "Semitransparente", "permanencia": "", "tine": true, "granula": false, "lifting": "BAJA (FÁCIL LIFTING)", "serie": "4 AA", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#6a4aa0", "notas": "Detalle tinción: SI: EXTREMA"}, {"nombreEs": "AMARILLO DE CADMIO CLARO", "nombreEn": "CADMIUN YELLOW LIGHT", "marca": "Holbein", "familia": "Amarillo", "subfamilia": "Amarillo Frío (Limón)", "pigmentos": "PY37", "pigmentoNombre": "", "opacidad": "Opaco", "permanencia": "", "tine": false, "granula": false, "lifting": "MEDIA", "serie": "C", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#f5e14a", "notas": ""}, {"nombreEs": "AMARILLO DE CADMIO PÁLIDO", "nombreEn": "CADMIUM YELLOW PALE", "marca": "Holbein", "familia": "Amarillo", "subfamilia": "Amarillo Frío (Limón)", "pigmentos": "PY37", "pigmentoNombre": "", "opacidad": "Opaco", "permanencia": "", "tine": false, "granula": false, "lifting": "MEDIA", "serie": "C", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#f5e14a", "notas": ""}, {"nombreEs": "AMARILLO TRANSPARENTE", "nombreEn": "TRANSPARENT YELLOW", "marca": "Winsor & Newton", "familia": "Amarillo", "subfamilia": "Amarillo Neutro", "pigmentos": "PY150", "pigmentoNombre": "", "opacidad": "Transparente", "permanencia": "", "tine": false, "granula": false, "lifting": "MEDIA", "serie": "1 A", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#c9a12b", "notas": ""}, {"nombreEs": "AMARILLO WINSOR", "nombreEn": "WINSOR YELLOW", "marca": "Winsor & Newton", "familia": "Amarillo", "subfamilia": "Amarillo Neutro", "pigmentos": "PY154", "pigmentoNombre": "", "opacidad": "Semitransparente", "permanencia": "", "tine": false, "granula": false, "lifting": "MEDIA", "serie": "1 A", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#f1cc2a", "notas": ""}, {"nombreEs": "AMARILLO INDIO", "nombreEn": "INDIAN YELLOW", "marca": "Winsor & Newton", "familia": "Amarillo", "subfamilia": "Amarillo Cálido", "pigmentos": "PY153/Mezcla", "pigmentoNombre": "", "opacidad": "Transparente", "permanencia": "", "tine": false, "granula": false, "lifting": "ALTA (TIÑE EL PAPEL)", "serie": "1 A", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#f1cc2a", "notas": ""}, {"nombreEs": "ORO QUINACRIDONA", "nombreEn": "QUINACRIDONE GOLD", "marca": "Winsor & Newton", "familia": "Amarillo", "subfamilia": "Dorado Cálido", "pigmentos": "PR206, PY150", "pigmentoNombre": "", "opacidad": "Transparente", "permanencia": "", "tine": false, "granula": false, "lifting": "ALTA (TIÑE EL PAPEL)", "serie": "3 A", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#c9a12b", "notas": ""}, {"nombreEs": "GUSTAGAMBA NUEVO", "nombreEn": "NEW GAMBOGE", "marca": "Winsor & Newton", "familia": "Amarillo", "subfamilia": "Dorado Cálido", "pigmentos": "PY153/Mezcla", "pigmentoNombre": "", "opacidad": "Transparente", "permanencia": "", "tine": false, "granula": false, "lifting": "ALTA (TIÑE EL PAPEL)", "serie": "1 A", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#f1cc2a", "notas": ""}, {"nombreEs": "LIMON WINSOR", "nombreEn": "WINSOR LEMON", "marca": "Winsor & Newton", "familia": "Amarillo", "subfamilia": "Amarillo Frío (Limón)", "pigmentos": "PY175", "pigmentoNombre": "", "opacidad": "Transparente", "permanencia": "", "tine": false, "granula": false, "lifting": "MEDIA", "serie": "1 A", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#f1cc2a", "notas": ""}, {"nombreEs": "AUREOLINA", "nombreEn": "AUREOLIN", "marca": "Winsor & Newton", "familia": "Amarillo", "subfamilia": "Amarillo Frío (Limón)", "pigmentos": "PY40", "pigmentoNombre": "POTASSIUM COBALTINITRITE", "opacidad": "Transparente", "permanencia": "", "tine": false, "granula": false, "lifting": "MEDIA", "serie": "4 A", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#f1cc2a", "notas": ""}, {"nombreEs": "AMARILLO DE CADMIO", "nombreEn": "CADMIUM YELLOW", "marca": "Winsor & Newton", "familia": "Amarillo", "subfamilia": "Amarillo Cálido", "pigmentos": "PY35", "pigmentoNombre": "", "opacidad": "Opaco", "permanencia": "", "tine": false, "granula": false, "lifting": "MEDIA", "serie": "4 A", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#f2c318", "notas": ""}, {"nombreEs": "AMARILLO DE NÁPOLES", "nombreEn": "NAPLES YELLOW", "marca": "Winsor & Newton", "familia": "Amarillo", "subfamilia": "Tierra Amarilla Cálida (Ocres)", "pigmentos": "PBr24", "pigmentoNombre": "", "opacidad": "Opaco", "permanencia": "", "tine": false, "granula": false, "lifting": "MEDIA", "serie": "1 AA", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#f1cc2a", "notas": ""}, {"nombreEs": "AMARILLO DE CADMIO PÁLIDO", "nombreEn": "CADMIUM YELLOW PALE", "marca": "Winsor & Newton", "familia": "Amarillo", "subfamilia": "Amarillo Frío (Limón)", "pigmentos": "PY35", "pigmentoNombre": "", "opacidad": "Opaco", "permanencia": "", "tine": false, "granula": false, "lifting": "MEDIA", "serie": "4 A", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#f2c318", "notas": ""}, {"nombreEs": "AMARILLO HANSA CLARO", "nombreEn": "HANSA YELLOW LIGHT", "marca": "Daniel Smith", "familia": "Amarillo", "subfamilia": "Amarillo Frío (Limón)", "pigmentos": "PY3", "pigmentoNombre": "", "opacidad": "Semitransparente", "permanencia": "", "tine": false, "granula": false, "lifting": "MEDIA", "serie": "", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#f5e14a", "notas": ""}, {"nombreEs": "VERDE COMPUESTO", "nombreEn": "COMPOSE GREEN", "marca": "Holbein", "familia": "Verde", "subfamilia": "Verde Cálido Brillante", "pigmentos": "Mezcla base", "pigmentoNombre": "", "opacidad": "Opaco", "permanencia": "", "tine": false, "granula": false, "lifting": "MEDIA", "serie": "A", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#3f8a4a", "notas": ""}, {"nombreEs": "TIERRA VERDE", "nombreEn": "GREEN EARTH", "marca": "Schmincke", "familia": "Verde", "subfamilia": "Verde Neutro Apagado", "pigmentos": "PBk7 (+PG23)", "pigmentoNombre": "", "opacidad": "Transparente", "permanencia": "", "tine": true, "granula": false, "lifting": "BAJA (FÁCIL LIFTING)", "serie": "1", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#3f8a4a", "notas": "Detalle tinción: SI: MEDIA"}, {"nombreEs": "VERDE DE HOOKER", "nombreEn": "HOOKER´S GREEN", "marca": "Holbein", "familia": "Verde", "subfamilia": "Verde Cálido Brillante", "pigmentos": "PG7", "pigmentoNombre": "", "opacidad": "Transparente", "permanencia": "", "tine": false, "granula": false, "lifting": "ALTA (TIÑE EL PAPEL)", "serie": "B", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#0d6b4f", "notas": ""}, {"nombreEs": "GRIS VERDE", "nombreEn": "GREEN GREY", "marca": "Holbein", "familia": "Verde", "subfamilia": "Verde Neutro Apagado", "pigmentos": "PG17", "pigmentoNombre": "", "opacidad": "Semiopaco", "permanencia": "", "tine": true, "granula": false, "lifting": "MEDIA", "serie": "A", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#3f8a4a", "notas": "Detalle tinción: SI: LIGERA"}, {"nombreEs": "VERDE ESMERALDA", "nombreEn": "VIRIDIAN", "marca": "Holbein", "familia": "Verde", "subfamilia": "Verde Frío (Viridiano / Esmeralda)", "pigmentos": "PG18", "pigmentoNombre": "", "opacidad": "Transparente", "permanencia": "", "tine": true, "granula": false, "lifting": "BAJA (FÁCIL LIFTING)", "serie": "C", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#3f8a4a", "notas": "Detalle tinción: SI: MEDIA"}, {"nombreEs": "VERDE VEJIGA", "nombreEn": "SAP GREEN", "marca": "Holbein", "familia": "Verde", "subfamilia": "Verde Cálido Terroso (Oliva / Vejiga)", "pigmentos": "PY150, PR122(+Verde)", "pigmentoNombre": "", "opacidad": "Transparente", "permanencia": "", "tine": false, "granula": false, "lifting": "ALTA (TIÑE EL PAPEL)", "serie": "B", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#d63c8c", "notas": ""}, {"nombreEs": "VERDE DE HOOKER", "nombreEn": "HOOKER´S GREEN", "marca": "Schmincke", "familia": "Verde", "subfamilia": "Verde Cálido Terroso (Oliva / Vejiga)", "pigmentos": "PB15:3", "pigmentoNombre": "", "opacidad": "Semitransparente", "permanencia": "", "tine": true, "granula": false, "lifting": "ALTA (TIÑE EL PAPEL)", "serie": "1", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#0e5a8f", "notas": "Detalle tinción: SI: LIGERA"}, {"nombreEs": "VERDE ESMERALDA", "nombreEn": "VIRIDIAN", "marca": "Winsor & Newton", "familia": "Verde", "subfamilia": "Verde Frío (Viridiano / Esmeralda)", "pigmentos": "PG18", "pigmentoNombre": "", "opacidad": "Transparente", "permanencia": "", "tine": true, "granula": false, "lifting": "BAJA (FÁCIL LIFTING)", "serie": "3 AA", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#3f8a4a", "notas": "Detalle tinción: SI: ALTA"}, {"nombreEs": "VERDE DE COBALTO", "nombreEn": "COBALT GREEN", "marca": "Holbein", "familia": "Verde", "subfamilia": "Verde Frío (Viridiano / Esmeralda)", "pigmentos": "PG18", "pigmentoNombre": "", "opacidad": "Semitransparente", "permanencia": "", "tine": true, "granula": false, "lifting": "BAJA (FÁCIL LIFTING)", "serie": "D", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#3f8a4a", "notas": "Detalle tinción: SI: ALTA"}, {"nombreEs": "VERDE WINSOR (MATIZ AMARILLO)", "nombreEn": "WINSOR GREEN (YELLOW SHADE)", "marca": "Winsor & Newton", "familia": "Verde", "subfamilia": "Verde Cálido Brillante", "pigmentos": "PG36", "pigmentoNombre": "", "opacidad": "Transparente", "permanencia": "", "tine": false, "granula": false, "lifting": "ALTA (TIÑE EL PAPEL)", "serie": "1 A", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#3f8c3a", "notas": ""}, {"nombreEs": "VERDE BAMBÚ", "nombreEn": "BAMBOO GREEN", "marca": "Holbein", "familia": "Verde", "subfamilia": "Verde Cálido Brillante", "pigmentos": "PG36", "pigmentoNombre": "", "opacidad": "Transparente", "permanencia": "", "tine": false, "granula": false, "lifting": "ALTA (TIÑE EL PAPEL)", "serie": "B", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#3f8c3a", "notas": ""}, {"nombreEs": "VERDE OLIVA", "nombreEn": "OILVE GREEN", "marca": "Holbein", "familia": "Verde", "subfamilia": "Verde Cálido Terroso (Oliva / Vejiga)", "pigmentos": "PY150", "pigmentoNombre": "", "opacidad": "Transparente", "permanencia": "", "tine": false, "granula": false, "lifting": "ALTA (TIÑE EL PAPEL)", "serie": "A", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#c9a12b", "notas": ""}, {"nombreEs": "VERDE DE HOOKER", "nombreEn": "HOOKER´S GREEN", "marca": "Winsor & Newton", "familia": "Verde", "subfamilia": "Verde Cálido Brillante", "pigmentos": "PG36", "pigmentoNombre": "COPPER PHTHALOCYANINE", "opacidad": "Transparente", "permanencia": "", "tine": false, "granula": false, "lifting": "ALTA (TIÑE EL PAPEL)", "serie": "1 A", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#3f8c3a", "notas": ""}, {"nombreEs": "SIENA TOSTADA", "nombreEn": "BURNT SIENNA", "marca": "Schmincke", "familia": "Tierra", "subfamilia": "Tierra Cálida (Sienas / Óxidos)", "pigmentos": "PR101, PBk9", "pigmentoNombre": "", "opacidad": "Semitransparente", "permanencia": "", "tine": true, "granula": false, "lifting": "MEDIA", "serie": "1", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#9a3b25", "notas": "Detalle tinción: SI: LIGERA"}, {"nombreEs": "SOMBRA TOSTADA", "nombreEn": "BURNT UMBER", "marca": "Holbein", "familia": "Tierra", "subfamilia": "Tierra Cálida Oscura (Sombra Tostada)", "pigmentos": "PBr7", "pigmentoNombre": "", "opacidad": "Semitransparente", "permanencia": "", "tine": true, "granula": false, "lifting": "MEDIA", "serie": "A", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#9a6a3a", "notas": "Detalle tinción: SI: LIGERA"}, {"nombreEs": "SOMBRA NATURAL", "nombreEn": "UMBER", "marca": "Holbein", "familia": "Tierra", "subfamilia": "Tierra Neutra", "pigmentos": "PBr7", "pigmentoNombre": "", "opacidad": "Semitransparente", "permanencia": "", "tine": true, "granula": false, "lifting": "MEDIA", "serie": "A", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#9a6a3a", "notas": "Detalle tinción: SI: LIGERA"}, {"nombreEs": "SOMBRA NATURAL", "nombreEn": "RAW UMBER", "marca": "Holbein", "familia": "Tierra", "subfamilia": "Tierra Fría (Sombra Natural / Verdosa)", "pigmentos": "PBr7", "pigmentoNombre": "", "opacidad": "Semitransparente", "permanencia": "", "tine": true, "granula": false, "lifting": "MEDIA", "serie": "A", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#9a6a3a", "notas": "Detalle tinción: SI: LIGERA"}, {"nombreEs": "OCRE AMARILLO", "nombreEn": "YELLOW OCHRE", "marca": "Holbein", "familia": "Amarillo", "subfamilia": "Tierra Amarilla Cálida (Ocres)", "pigmentos": "PY42", "pigmentoNombre": "", "opacidad": "Semiopaco", "permanencia": "", "tine": false, "granula": false, "lifting": "MEDIA", "serie": "A", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#c8922a", "notas": ""}, {"nombreEs": "SOMBRA TOSTADA", "nombreEn": "BURNT UMBER", "marca": "Winsor & Newton", "familia": "Tierra", "subfamilia": "Tierra Cálida Oscura (Sombra Tostada)", "pigmentos": "PBr7", "pigmentoNombre": "", "opacidad": "Semitransparente", "permanencia": "", "tine": true, "granula": false, "lifting": "MEDIA", "serie": "", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#9a6a3a", "notas": "Detalle tinción: SI: LIGERA"}, {"nombreEs": "SEPIA", "nombreEn": "SEPIA", "marca": "Winsor & Newton", "familia": "Tierra", "subfamilia": "Tierra Oscura Neutra (Sepia)", "pigmentos": "PBk6", "pigmentoNombre": "", "opacidad": "Semiopaco", "permanencia": "", "tine": true, "granula": false, "lifting": "ALTA (TIÑE EL PAPEL)", "serie": "1 AA", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#9a6a3a", "notas": "Detalle tinción: SI: LIGERA"}, {"nombreEs": "SIENA TOSTADA", "nombreEn": "BURNT SIENNA", "marca": "Winsor & Newton", "familia": "Tierra", "subfamilia": "Tierra Cálida (Sienas / Óxidos)", "pigmentos": "PR101", "pigmentoNombre": "", "opacidad": "Transparente", "permanencia": "", "tine": false, "granula": false, "lifting": "MEDIA", "serie": "1 AA", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#9a3b25", "notas": ""}, {"nombreEs": "SIENA NATURAL", "nombreEn": "RAW SIENNA", "marca": "Holbein", "familia": "Tierra", "subfamilia": "Tierra Amarilla Cálida (Ocres)", "pigmentos": "PY43", "pigmentoNombre": "", "opacidad": "Semitransparente", "permanencia": "", "tine": true, "granula": false, "lifting": "MEDIA", "serie": "A", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#c99a3c", "notas": "Detalle tinción: SI: LIGERA"}, {"nombreEs": "SIENA NATURAL", "nombreEn": "RAW SIENNA", "marca": "Winsor & Newton", "familia": "Tierra", "subfamilia": "Tierra Amarilla Cálida (Ocres)", "pigmentos": "PY42", "pigmentoNombre": "", "opacidad": "Semitransparente", "permanencia": "", "tine": false, "granula": false, "lifting": "MEDIA", "serie": "1 AA", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#c8922a", "notas": ""}, {"nombreEs": "OCRE AMARILLO", "nombreEn": "YELLOW OCHRE", "marca": "Winsor & Newton", "familia": "Amarillo", "subfamilia": "Tierra Amarilla Cálida (Ocres)", "pigmentos": "PY43", "pigmentoNombre": "", "opacidad": "Semiopaco", "permanencia": "", "tine": true, "granula": false, "lifting": "MEDIA", "serie": "1 AA", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#c99a3c", "notas": "Detalle tinción: SI: LIGERA"}, {"nombreEs": "SOMBRA NATURAL", "nombreEn": "RAW UMBER", "marca": "Winsor & Newton", "familia": "Tierra", "subfamilia": "Tierra Fría (Sombra Natural / Verdosa)", "pigmentos": "PBr7", "pigmentoNombre": "", "opacidad": "Semitransparente", "permanencia": "", "tine": true, "granula": false, "lifting": "MEDIA", "serie": "1 AA", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#9a6a3a", "notas": "Detalle tinción: SI: LIGERA"}, {"nombreEs": "ARENA PLAYA...", "nombreEn": "SANDSTONE", "marca": "SAA", "familia": "Tierra", "subfamilia": "Tierra Clara Cálida", "pigmentos": "PW6", "pigmentoNombre": "", "opacidad": "Opaco", "permanencia": "", "tine": true, "granula": false, "lifting": "BAJA (FÁCIL LIFTING)", "serie": "", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#f2f2ef", "notas": "Detalle tinción: SI: ALTA"}, {"nombreEs": "BLANCO DE CHINA", "nombreEn": "CHINESE WHITE", "marca": "Winsor & Newton", "familia": "Blanco", "subfamilia": "Blanco / Neutro Frío", "pigmentos": "PW4 (Zinc)", "pigmentoNombre": "", "opacidad": "Semiopaco", "permanencia": "", "tine": false, "granula": false, "lifting": "BAJA (FÁCIL LIFTING)", "serie": "1 AA", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#eeeee9", "notas": ""}, {"nombreEs": "GRIS CALIENTE", "nombreEn": "WARM GREY", "marca": "Sennelier", "familia": "Gris / Negro", "subfamilia": "Gris Cálido", "pigmentos": "PY42", "pigmentoNombre": "PR101", "opacidad": "Semiopaco", "permanencia": "", "tine": true, "granula": false, "lifting": "MEDIA", "serie": "1", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#c8922a", "notas": "Detalle tinción: SI: MEDIA"}, {"nombreEs": "GRIS DE PAYNE", "nombreEn": "GRIS DE PAYNE", "marca": "Schmincke", "familia": "Gris / Negro", "subfamilia": "Gris Azulado (Frío / Payne)", "pigmentos": "PR101, PB29, PBk7", "pigmentoNombre": "", "opacidad": "Semiopaco", "permanencia": "", "tine": true, "granula": false, "lifting": "ALTA (TIÑE EL PAPEL)", "serie": "1", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#9a3b25", "notas": "Detalle tinción: SI: LIGERA"}, {"nombreEs": "TINTA NEUTRA", "nombreEn": "NEUTRAL TINT", "marca": "Holbein", "familia": "Gris / Negro", "subfamilia": "Gris Neutro Puro", "pigmentos": "PBk6", "pigmentoNombre": "", "opacidad": "Semitransparente", "permanencia": "", "tine": false, "granula": false, "lifting": "ALTA (TIÑE EL PAPEL)", "serie": "A", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#555", "notas": ""}, {"nombreEs": "NEGRO DE MARFIL", "nombreEn": "IVORY BLACK", "marca": "Holbein", "familia": "Gris / Negro", "subfamilia": "Negro Cálido", "pigmentos": "PBk9", "pigmentoNombre": "", "opacidad": "Semiopaco", "permanencia": "", "tine": false, "granula": false, "lifting": "MEDIA", "serie": "A", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#555", "notas": ""}, {"nombreEs": "TINTA NEUTRA", "nombreEn": "NEUTRAL TINT", "marca": "Winsor & Newton", "familia": "Gris / Negro", "subfamilia": "Gris Neutro Puro", "pigmentos": "PB15", "pigmentoNombre": "", "opacidad": "Semitransparente", "permanencia": "", "tine": false, "granula": false, "lifting": "ALTA (TIÑE EL PAPEL)", "serie": "1 A", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#0e5a8f", "notas": ""}, {"nombreEs": "NEGRO DE MARTE", "nombreEn": "MARS BLACK", "marca": "Winsor & Newton", "familia": "Gris / Negro", "subfamilia": "Negro Cálido", "pigmentos": "PBk11", "pigmentoNombre": "", "opacidad": "Opaco", "permanencia": "", "tine": true, "granula": false, "lifting": "MEDIA", "serie": "1 AA", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#555", "notas": "Detalle tinción: SI: ALTA"}, {"nombreEs": "GRIS DE PAYNE", "nombreEn": "PAYNE´S GRAY", "marca": "Winsor & Newton", "familia": "Gris / Negro", "subfamilia": "Gris Neutro Puro", "pigmentos": "PB15", "pigmentoNombre": "", "opacidad": "Semitransparente", "permanencia": "", "tine": false, "granula": false, "lifting": "ALTA (TIÑE EL PAPEL)", "serie": "1 A", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#0e5a8f", "notas": ""}, {"nombreEs": "GRIS GRIS", "nombreEn": "GREY OF GREY", "marca": "Holbein", "familia": "Gris / Negro", "subfamilia": "Gris Neutro Puro", "pigmentos": "PBk6 (+Blanco)", "pigmentoNombre": "", "opacidad": "Opaco", "permanencia": "", "tine": false, "granula": false, "lifting": "MEDIA", "serie": "A", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#555", "notas": ""}, {"nombreEs": "BLANCO OPACO EXTRA", "nombreEn": "OPAQUE WHITE EXTRA", "marca": "Rembrandt (Royal Talens)", "familia": "Blanco", "subfamilia": "Blanco / Neutro Frío", "pigmentos": "PW6", "pigmentoNombre": "", "opacidad": "Opaco", "permanencia": "", "tine": false, "granula": false, "lifting": "BAJA (FÁCIL LIFTING)", "serie": "", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#f2f2ef", "notas": ""}, {"nombreEs": "AZUL CIELO", "nombreEn": "CELESTIAL BLUE", "marca": "White Nights", "familia": "Azul", "subfamilia": "Azul Cálido (Violáceo / Rojizo)", "pigmentos": "PW6", "pigmentoNombre": "", "opacidad": "Opaco", "permanencia": "", "tine": false, "granula": false, "lifting": "", "serie": "", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#f2f2ef", "notas": ""}, {"nombreEs": "OCRE ORO", "nombreEn": "GOLD OCRE", "marca": "Winsor & Newton", "familia": "Amarillo", "subfamilia": "Dorado Cálido", "pigmentos": "PY42", "pigmentoNombre": "", "opacidad": "Semitransparente", "permanencia": "II (muy buena)", "tine": false, "granula": false, "lifting": "", "serie": "AA 2", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#c8922a", "notas": ""}, {"nombreEs": "MAGENTA QUINACRIDONA", "nombreEn": "QUINACRIDONE MAGENTA", "marca": "Winsor & Newton", "familia": "Rojo", "subfamilia": "", "pigmentos": "PR122", "pigmentoNombre": "", "opacidad": "Transparente", "permanencia": "", "tine": false, "granula": false, "lifting": "", "serie": "A 3", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#d63c8c", "notas": ""}, {"nombreEs": "VERDE APATITA GENUINA", "nombreEn": "GREEN APATITE GENUINE", "marca": "Daniel Smith", "familia": "Verde", "subfamilia": "", "pigmentos": "", "pigmentoNombre": "GENUINE GREEN APATITE", "opacidad": "Transparente", "permanencia": "", "tine": false, "granula": false, "lifting": "BAJA (FÁCIL LIFTING)", "serie": "", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#3f8a4a", "notas": ""}, {"nombreEs": "VERDE HOJA", "nombreEn": "LEAF GREEN", "marca": "Holbein", "familia": "Verde", "subfamilia": "Verde Cálido Brillante", "pigmentos": "PY154", "pigmentoNombre": "", "opacidad": "Transparente", "permanencia": "I (excelente)", "tine": false, "granula": false, "lifting": "BAJA (FÁCIL LIFTING)", "serie": "B", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#3f8a4a", "notas": ""}, {"nombreEs": "BLANCO TITANIO", "nombreEn": "TITANIUM WHITE", "marca": "Winsor & Newton", "familia": "Blanco", "subfamilia": "Blanco / Neutro Frío", "pigmentos": "PW6", "pigmentoNombre": "", "opacidad": "Opaco", "permanencia": "", "tine": false, "granula": false, "lifting": "", "serie": "AA 1", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#f2f2ef", "notas": ""}, {"nombreEs": "ROJO DE PYRROL", "nombreEn": "PYRROL RED", "marca": "Daniel Smith", "familia": "Rojo", "subfamilia": "", "pigmentos": "PR254", "pigmentoNombre": "", "opacidad": "Semitransparente", "permanencia": "I (excelente)", "tine": false, "granula": false, "lifting": "MEDIA", "serie": "", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#c81f1f", "notas": ""}, {"nombreEs": "AZUL CERÚLEO CROMO", "nombreEn": "CERULEAN BLUE CHROMIUM", "marca": "Daniel Smith", "familia": "Azul", "subfamilia": "", "pigmentos": "PB36", "pigmentoNombre": "", "opacidad": "Semitransparente", "permanencia": "I (excelente)", "tine": true, "granula": false, "lifting": "BAJA (FÁCIL LIFTING)", "serie": "", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#2f7f9a", "notas": "Detalle tinción: SI: MEDIA"}, {"nombreEs": "ÓXIDO ROJO TRANSPARENTE", "nombreEn": "TRANSPARENT RED OXIDE", "marca": "Daniel Smith", "familia": "Rojo", "subfamilia": "", "pigmentos": "PR101", "pigmentoNombre": "", "opacidad": "Semitransparente", "permanencia": "I (excelente)", "tine": false, "granula": false, "lifting": "MEDIA", "serie": "", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#9a3b25", "notas": ""}, {"nombreEs": "AMARILLO DE MARTE", "nombreEn": "MARS YELLOW", "marca": "Daniel Smith", "familia": "Amarillo", "subfamilia": "", "pigmentos": "PY42", "pigmentoNombre": "", "opacidad": "Semitransparente", "permanencia": "I (excelente)", "tine": true, "granula": false, "lifting": "BAJA (FÁCIL LIFTING)", "serie": "", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#c8922a", "notas": "Detalle tinción: SI: MEDIA"}, {"nombreEs": "VIOLETA DE PERILENO", "nombreEn": "PERYLENE VIOLET", "marca": "", "familia": "Violeta", "subfamilia": "", "pigmentos": "PV29", "pigmentoNombre": "", "opacidad": "Transparente", "permanencia": "I (excelente)", "tine": true, "granula": false, "lifting": "BAJA (FÁCIL LIFTING)", "serie": "", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#6a4aa0", "notas": "Detalle tinción: SI: MEDIA"}, {"nombreEs": "BLANCO DE TITANIO", "nombreEn": "TITANIUM WHITW", "marca": "Daniel Smith", "familia": "Blanco", "subfamilia": "", "pigmentos": "PW6", "pigmentoNombre": "", "opacidad": "Opaco", "permanencia": "", "tine": false, "granula": false, "lifting": "BAJA (FÁCIL LIFTING)", "serie": "", "codigo": "", "formato": "Tubo 15 ml", "estado": "Lleno", "cantidad": 1, "swatch": "#f2f2ef", "notas": ""}];
-$('#cargar-mi-tabla').addEventListener('click',()=>{
-  const ya=datos.pinturas.filter(p=>MIS_COLORES.some(m=>m.nombreEs===p.nombreEs&&m.marca===p.marca)).length;
-  if(!confirm(`Se añadirán ${MIS_COLORES.length} colores de tu tabla`+(ya?` (parece que ${ya} ya están; se duplicarían)`:'')+'. ¿Continuar?')) return;
-  for(const m of MIS_COLORES){ const nueva=nombreMarca(idMarcaAsegura(m.marca)); datos.pinturas.push({...m, id:uid(), marca:idMarcaAsegura(m.marca)}); }
-  guardar(`${MIS_COLORES.length} colores cargados`); rellenarFiltros(); rellenarFiltrosCat(); pintar(); pintarCat(); pintarMarcas();
-  alert('Tus colores se han cargado. Puedes editar cualquiera; el color de muestra es aproximado por pigmento.');
+/* ---------- pantalla de inicio ---------- */
+$$('#tab-inicio .menu button[data-ir]').forEach(b=>b.addEventListener('click',()=>irA(b.dataset.ir)));
+async function pintarPortada(){
+  const cont=$('#portada'); let img=cont.querySelector('img');
+  const id=(datos.ajustes&&datos.ajustes.portada)||null;
+  const u=id?await urlDe(id):'';
+  if(u){ if(!img){ img=document.createElement('img'); cont.insertBefore(img,cont.firstChild); } img.src=u; $('#portada-sin').classList.add('oculto'); $('#portada-velo').classList.remove('oculto'); }
+  else { if(img) img.remove(); $('#portada-sin').classList.remove('oculto'); $('#portada-velo').classList.add('oculto'); }
+}
+$('#portada').addEventListener('click',async()=>{
+  const tiene=datos.ajustes&&datos.ajustes.portada;
+  if(tiene && !confirm('¿Cambiar la foto de portada?')) return;
+  const f=await elegirArchivo('image/*',true); if(!f) return;
+  datos.ajustes=datos.ajustes||{};
+  if(datos.ajustes.portada) await bd.borrar(datos.ajustes.portada);
+  const id=uid(); await bd.guardar(id, await reducirImagen(f,2200)); datos.ajustes.portada=id;
+  guardar('Foto de portada actualizada'); pintarPortada();
 });
-function idMarcaAsegura(nombre){
-  if(!nombre) return datos.marcas[0]?.id;
-  const n=nombre.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
-  let m=datos.marcas.find(x=>{const xn=x.nombre.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');return xn===n||xn.includes(n)||n.includes(xn);});
-  if(m) return m.id;
-  const nueva={id:uid(),nombre:nombre,gama:'',web:'',carta:'',pdfLocal:'',notas:'Añadida al cargar tu tabla de colores.'}; datos.marcas.push(nueva); return nueva.id;
+$('#btn-utilidades').addEventListener('click',()=>$('#dlg-utilidades').showModal());
+$('#util-cerrar').addEventListener('click',()=>$('#dlg-utilidades').close());
+$$('#dlg-utilidades [data-ir]').forEach(b=>b.addEventListener('click',()=>{ $('#dlg-utilidades').close(); irA(b.dataset.ir); }));
+$('#btn-salir').addEventListener('click',()=>{
+  if(!confirm('¿Cerrar la aplicación?')) return;
+  try{ window.close(); }catch(e){}
+  document.body.innerHTML='<div style="max-width:520px;margin:18vh auto;text-align:center;font-family:Georgia,serif;color:#26241F;padding:20px"><h1 style="font-size:26px">Hasta pronto</h1><p style="color:#6E6A60">Puedes cerrar esta pestaña. Tus datos quedan guardados'+(dbx.conectado()?' y sincronizados en Dropbox':'')+'.</p><p><button onclick="location.reload()" style="background:#2E4C9B;color:#fff;border:0;border-radius:6px;padding:10px 16px;font-size:15px;cursor:pointer">Volver a abrir</button></p></div>';
+});
+
+/* ---------- diálogo de origen de imagen ---------- */
+(function(){ const d=document.getElementById('dlg-origen'); if(d){ d._camara=document.getElementById('origen-camara'); d._galeria=document.getElementById('origen-galeria'); d._cancelar=document.getElementById('origen-cancelar'); } })();
+
+/* ---------- importar carta en PDF ---------- */
+let catpdfCandidatos=[];
+const dlgCatPdf=$('#dlg-cat-pdf');
+$('#cat-pdf').addEventListener('click',()=>{ if(typeof pdfjsLib==='undefined' && typeof window['pdfjs-dist/build/pdf']==='undefined'){ /* pdf.js expone pdfjsLib */ } $('#cat-pdf-file').click(); });
+$('#catpdf-cancelar').addEventListener('click',()=>dlgCatPdf.close());
+function pdfLib(){ return window.pdfjsLib || window['pdfjs-dist/build/pdf'] || null; }
+$('#cat-pdf-file').addEventListener('change',async e=>{
+  const file=e.target.files[0]; if(!file) return; e.target.value='';
+  const lib=pdfLib();
+  if(!lib){ alert('No se ha podido cargar el lector de PDF. Necesitas conexión la primera vez.'); return; }
+  try{ lib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js'; }catch(_){}
+  $('#catpdf-marca').innerHTML=[...datos.marcas].sort((a,b)=>a.nombre.localeCompare(b.nombre,'es')).map(m=>`<option value="${esc(m.id)}">${esc(m.nombre)}</option>`).join('');
+  $('#catpdf-familia').innerHTML=ORDEN_FAMILIA.map(f=>`<option ${f==='Otro'?'selected':''}>${esc(f)}</option>`).join('');
+  $('#catpdf-estado').textContent='Leyendo el PDF…'; $('#catpdf-lista').style.display='none'; $('#catpdf-anadir').classList.add('oculto');
+  dlgCatPdf.showModal();
+  try{
+    const buf=await file.arrayBuffer(); const pdf=await lib.getDocument({data:buf}).promise;
+    let texto='';
+    for(let p=1;p<=pdf.numPages;p++){ const pg=await pdf.getPage(p); const tc=await pg.getTextContent(); texto+=tc.items.map(i=>i.str).join(' ')+'\n'; }
+    catpdfCandidatos=detectarColoresPDF(texto);
+    if(!catpdfCandidatos.length){ $('#catpdf-estado').textContent='No se han detectado colores automáticamente. Esta carta es demasiado visual; súbeme el PDF por el chat y te preparo la tabla.'; return; }
+    $('#catpdf-estado').textContent=`Detectados ${catpdfCandidatos.length} posibles colores. Desmarca los que no quieras.`;
+    $('#catpdf-lista').style.display='block'; $('#catpdf-anadir').classList.remove('oculto');
+    $('#catpdf-lista').innerHTML=catpdfCandidatos.map((c,i)=>`<label style="display:flex;gap:8px;align-items:center;font-size:14px;margin:4px 0"><input type="checkbox" checked data-ci="${i}" style="width:auto"><b>${esc(c.nombre)}</b> ${c.pigmentos?`<span style="color:var(--gris)">${esc(c.pigmentos)}</span>`:''}</label>`).join('');
+  }catch(err){ $('#catpdf-estado').textContent='No se pudo leer el PDF: '+(err.message||err); }
+});
+function detectarColoresPDF(texto){
+  // Busca patrones "Nombre ... PBxx" o "PBxx ... Nombre". Heurística sencilla.
+  const out=[]; const vistos=new Set();
+  const pigRe=/\b(P[WBGRYOVBr]{1,2}\d{1,3}(?::\d)?)\b/g;
+  // dividir en líneas y fragmentos
+  const lineas=texto.split(/\n|(?:\s{2,})/).map(s=>s.trim()).filter(s=>s.length>2);
+  for(const l of lineas){
+    const pigs=[...l.matchAll(pigRe)].map(m=>m[1]);
+    if(!pigs.length) continue;
+    // nombre = texto sin los pigmentos ni códigos sueltos, con letras
+    let nombre=l.replace(pigRe,'').replace(/\b\d{1,4}\b/g,' ').replace(/\s{2,}/g,' ').trim();
+    nombre=nombre.replace(/^[\-–·|]+|[\-–·|]+$/g,'').trim();
+    if(nombre.length<3 || !/[A-Za-zÁÉÍÓÚÑáéíóúñ]{3,}/.test(nombre)) continue;
+    if(nombre.length>48) nombre=nombre.slice(0,48).trim();
+    const clave=(nombre+'|'+pigs.join('')).toLowerCase();
+    if(vistos.has(clave)) continue; vistos.add(clave);
+    out.push({nombre, pigmentos:[...new Set(pigs)].join(', ')});
+  }
+  return out.slice(0,400);
+}
+$('#catpdf-anadir').addEventListener('click',()=>{
+  const marcaId=$('#catpdf-marca').value, fam=$('#catpdf-familia').value;
+  const sel=$$('#catpdf-lista input:checked').map(i=>catpdfCandidatos[+i.dataset.ci]);
+  if(!sel.length){ alert('No has marcado ningún color.'); return; }
+  for(const c of sel){ datos.pinturas.push({ id:uid(), nombreEs:c.nombre, nombreEn:'', marca:marcaId, familia:fam, subfamilia:'', pigmentos:c.pigmentos, pigmentoNombre:'', opacidad:'Transparente', permanencia:'', tine:false, granula:false, lifting:'', serie:'', codigo:'', formato:'Tubo 15 ml', estado:'Lleno', cantidad:1, swatch:hexPorPigmentoOFamilia(c.pigmentos,fam), notas:'Importado de PDF: revisar datos.' }); }
+  dlgCatPdf.close(); guardar(`${sel.length} colores importados del PDF`); rellenarFiltros(); rellenarFiltrosCat(); pintar(); pintarCat(); pintarMarcas();
+  alert(`Añadidos ${sel.length} colores. Revisa cada ficha: opacidad, permanencia y color de muestra hay que completarlos a mano.`);
+});
+function hexPorPigmentoOFamilia(pig,fam){
+  const M={PB29:'#2e4c9b',PB28:'#2a5fb0',PB35:'#4d8fc2',PB36:'#2f7f9a',PB15:'#0e5a8f',PB27:'#1b3a5c',PB60:'#243a6b',PR108:'#d3301f',PR254:'#c81f1f',PV19:'#c0304f',PR122:'#d63c8c',PBr7:'#8a5a2b',PR101:'#9a3b25',PY35:'#f2c318',PY3:'#f5e14a',PG7:'#0d6b4f',PG36:'#3f8c3a',PBk9:'#2b2b2b',PY43:'#c99a3c',PY150:'#c9a12b',PY42:'#c8922a',PW6:'#f2f2ef'};
+  const FAM={'Amarillo':'#f1cc2a','Naranja':'#e9822a','Rojo':'#c42a2a','Rosa / Magenta':'#d24c8a','Violeta':'#6a4aa0','Azul':'#2e5aa8','Verde':'#3f8a4a','Tierra':'#9a6a3a','Gris / Negro':'#555','Blanco':'#efefea','Otro':'#999'};
+  const p=(pig||'').toUpperCase();
+  for(const k in M){ if(p.indexOf(k)>-1) return M[k]; }
+  return FAM[fam]||'#999';
 }
 
+/* ---------- detector de duplicados ---------- */
+const dlgDups=$('#dlg-dups');
+$('#buscar-duplicados').addEventListener('click',()=>{ pintarDuplicados(); dlgDups.showModal(); });
+$('#dup-cerrar').addEventListener('click',()=>dlgDups.close());
+$('#dup-criterio').addEventListener('change',pintarDuplicados);
+function normTxt(s){ return String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s+/g,' ').trim(); }
+function claveDup(p,modo){
+  const n=normTxt(p.nombreEs)||normTxt(p.nombreEn);
+  if(modo==='n') return n;
+  if(modo==='mn') return nombreMarca(p.marca)+'|'+n;
+  return nombreMarca(p.marca)+'|'+n+'|'+normTxt(p.pigmentos);
+}
+function completitud(p){ // cuántos datos tiene rellenos, para decidir cuál conservar
+  let s=0; ['nombreEn','pigmentos','pigmentoNombre','subfamilia','permanencia','serie','codigo','lifting','notas'].forEach(k=>{ if(p[k]) s++; });
+  if(p.opacidad) s++; if(p.tine) s++; if(p.granula) s++;
+  if((p.fotos||[]).length) s+=5; // una foto de prueba pesa mucho
+  return s;
+}
+function pintarDuplicados(){
+  const modo=$('#dup-criterio').value;
+  const grupos={};
+  for(const p of datos.pinturas){ const k=claveDup(p,modo); if(!k||k==='|') continue; (grupos[k]=grupos[k]||[]).push(p); }
+  const dups=Object.entries(grupos).filter(([k,l])=>l.length>1);
+  if(!dups.length){ $('#dup-info').textContent='No se han encontrado colores duplicados con este criterio.'; $('#dup-lista').innerHTML=''; $('#dup-eliminar').classList.add('oculto'); return; }
+  const totalSobra=dups.reduce((a,[k,l])=>a+l.length-1,0);
+  $('#dup-info').innerHTML=`Encontrados <b>${dups.length}</b> grupos con repetidos (${totalSobra} fichas sobrantes). Por defecto se conserva la más completa (o la que tiene foto de prueba) y se marcan las demás para eliminar. Revisa antes de borrar.`;
+  $('#dup-eliminar').classList.remove('oculto');
+  $('#dup-lista').innerHTML=dups.map(([k,l])=>{
+    const ordenados=[...l].sort((a,b)=>completitud(b)-completitud(a));
+    const conservarId=ordenados[0].id;
+    const filas=ordenados.map(p=>{
+      const conservar=p.id===conservarId;
+      return `<div class="dup-fila">
+        <span class="mini" style="background:${esc(p.swatch||'#ccc')}"></span>
+        <span class="datos"><b>${esc(p.nombreEs||p.nombreEn)}</b> ${p.nombreEn&&p.nombreEs?`<span class="n">${esc(p.nombreEn)}</span>`:''}
+          <div class="n">${esc(nombreMarca(p.marca))}${p.pigmentos?' · '+esc(p.pigmentos):''}${p.serie?' · serie '+esc(p.serie):''}${(p.fotos||[]).length?' · con foto':''}</div></span>
+        ${conservar?'<span class="conservar">conservar</span>':`<label><input type="checkbox" class="dup-check" data-id="${esc(p.id)}" checked> eliminar</label>`}
+      </div>`;
+    }).join('');
+    return `<div class="dup-grupo"><h4>${esc(ordenados[0].nombreEs||ordenados[0].nombreEn)} · ${l.length} copias</h4>${filas}</div>`;
+  }).join('');
+}
+$('#dup-eliminar').addEventListener('click',async()=>{
+  const ids=$$('#dup-lista .dup-check:checked').map(i=>i.dataset.id);
+  if(!ids.length){ alert('No hay ninguna ficha marcada para eliminar.'); return; }
+  if(!confirm(`Se eliminarán ${ids.length} fichas duplicadas. Se conservan las marcadas como «conservar». ¿Continuar?`)) return;
+  const set=new Set(ids);
+  // borrar fotos asociadas de las que se eliminan
+  for(const p of datos.pinturas){ if(set.has(p.id)){ for(const f of (p.fotos||[])) await bd.borrar(f); } }
+  datos.pinturas=datos.pinturas.filter(p=>!set.has(p.id));
+  guardar(`${ids.length} duplicados eliminados`); rellenarFiltros(); rellenarFiltrosCat(); pintar(); pintarCat(); pintarMarcas();
+  pintarDuplicados();
+});
+
 /* ---------- arranque ---------- */
-cargar(); tomarInstantanea(); rellenarFiltros(); rellenarFiltrosCat(); pintarMarcas(); pintar(); pintarCat(); pintarObra(); pintarBiblio(); pintarTiendas(); pintarMarcasPinceles(); pintarPinceles(); pintarPaletas(); estadoGuardado(); dbx.init();
+cargar(); datos.ajustes=datos.ajustes||{}; tomarInstantanea(); rellenarFiltros(); rellenarFiltrosCat(); pintarMarcas(); pintar(); pintarCat(); pintarObra(); pintarBiblio(); pintarTiendas(); pintarMarcasPinceles(); pintarPinceles(); pintarPaletas(); estadoGuardado(); dbx.init(); irA('inicio'); pintarPortada();
 </script>
 </body>
 </html>
