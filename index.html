@@ -192,7 +192,7 @@
 
 <header>
   <div class="barra">
-    <h1>Estudio de acuarela <small id="resumen"></small><small style="color:var(--siena)">versión 16 · corrección inicio</small><small id="dbx-punto" title="Estado de Dropbox"></small></h1>
+    <h1>Estudio de acuarela <small id="resumen"></small><small style="color:var(--siena)">versión 17 · correcciones de fotos y Dropbox</small><small id="dbx-punto" title="Estado de Dropbox"></small></h1>
   </div>
   <nav role="tablist">
     <button role="tab" aria-selected="false" data-tab="inicio">Inicio</button>
@@ -337,13 +337,13 @@
 
 <!-- nota para una foto -->
 <dialog id="dlg-foto">
-  <form class="hoja" id="form-foto" method="dialog">
+  <form class="hoja" id="form-foto" onsubmit="return false">
     <h2>Foto de progreso</h2>
     <div class="campos">
       <div><label>Fecha</label><input name="fecha" type="date"></div>
       <div><label>Fase</label><input name="nota" placeholder="Dibujo, primeras aguadas, cielo…"></div>
     </div>
-    <div class="pie"><div class="der"><button type="button" class="btn sec" id="cancelar-foto">Cancelar</button><button type="submit" class="btn">Guardar foto</button></div></div>
+    <div class="pie"><div class="der"><button type="button" class="btn sec" id="cancelar-foto">Cancelar</button><button type="button" class="btn" id="guardar-foto">Guardar foto</button></div></div>
   </form>
 </dialog>
 
@@ -817,6 +817,7 @@ function irA(tab){ const b=$$('nav [data-tab]').find(x=>x.dataset.tab===tab); if
 $$('nav [data-tab]').forEach(b=>b.addEventListener('click',()=>{
   $$('nav [data-tab]').forEach(x=>x.setAttribute('aria-selected',x===b));
   TABS.forEach(t=>$('#tab-'+t).classList.toggle('oculto',t!==b.dataset.tab));
+  document.querySelector('nav[role=tablist]').classList.toggle('oculto', b.dataset.tab==='inicio');
 }));
 
 /* ---------- lista de pinturas ---------- */
@@ -1139,9 +1140,11 @@ function elegirArchivoSimple(accept, capture){
   return new Promise(ok=>{ const i=document.createElement('input'); i.type='file'; i.accept=accept; if(capture) i.capture='environment'; i.onchange=()=>ok(i.files[0]||null); i.click(); });
 }
 // Pregunta el origen de la imagen (cámara o fototeca/archivos). Para PDF u otros, va directo.
+const esTactil = (('ontouchstart' in window) || (navigator.maxTouchPoints>0)) && /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 function elegirArchivo(accept, preferirCamara){
   const esImagen = accept && accept.indexOf('image')>-1 && accept.indexOf('pdf')===-1;
-  if(!esImagen) return elegirArchivoSimple(accept,false);
+  // En ordenador (sin cámara táctil) el selector normal ya permite Fotos, Descargas, etc.
+  if(!esImagen || !esTactil) return elegirArchivoSimple(accept,false);
   return new Promise(ok=>{
     const d=document.getElementById('dlg-origen'); if(!d){ elegirArchivoSimple(accept,false).then(ok); return; }
     let resuelto=false; const fin=r=>{ if(resuelto) return; resuelto=true; ok(r); };
@@ -1276,15 +1279,19 @@ async function abrirFicha(id, paso){
   $('#borrar-paso')?.addEventListener('click',async()=>{ if(!confirm('¿Quitar esta foto de progreso?')) return; await bd.borrar(act.foto); o.pasos.splice(act.i,1); guardar('Foto quitada'); pintarObra(); abrirFicha(id); });
 }
 const dlgF=$('#dlg-foto'), formF=$('#form-foto');
+let _finNota=null;
 function pedirNotaFoto(v){
   return new Promise(ok=>{
     formF.elements.fecha.value=v.fecha||hoy(); formF.elements.nota.value=v.nota||'';
-    const fin=r=>{ formF.onsubmit=null; $('#cancelar-foto').onclick=null; dlgF.close(); ok(r); };
-    formF.onsubmit=e=>{ e.preventDefault(); fin({fecha:formF.elements.fecha.value,nota:formF.elements.nota.value.trim()}); };
-    $('#cancelar-foto').onclick=()=>fin(v.nota!==undefined&&v.id?null:{fecha:formF.elements.fecha.value,nota:''});
+    let hecho=false;
+    _finNota=r=>{ if(hecho) return; hecho=true; try{ dlgF.close(); }catch(e){} ok(r); };
     dlgF.showModal();
   });
 }
+// Guardar: botón normal (sin method=dialog) que lee y cierra
+$('#guardar-foto').addEventListener('click',()=>{ if(_finNota) _finNota({fecha:formF.elements.fecha.value,nota:formF.elements.nota.value.trim()}); });
+$('#cancelar-foto').addEventListener('click',()=>{ if(_finNota) _finNota(null); });
+dlgF.addEventListener('cancel',()=>{ if(_finNota) _finNota(null); });
 
 /* ---------- exposiciones ---------- */
 async function pintarExpos(){
@@ -1638,6 +1645,7 @@ const dbx = {
       res[k]=Object.values(map).filter(r=>{ const bm=borMap[k+':'+r.id]; return !(bm && bm>(r.mod||0)); }); }
     const seen=new Set(); res.borrados=bor.filter(b=>{ const k=b.col+':'+b.id+':'+b.mod; if(seen.has(k)) return false; seen.add(k); return true; }).slice(-2000);
     const ab={}; for(const a of [...(local.archivosBorrados||[]),...(remoto.archivosBorrados||[])]) ab[a.id]=Math.max(ab[a.id]||0,a.mod); res.archivosBorrados=Object.entries(ab).map(([id,mod])=>({id,mod})).slice(-2000);
+    const la=local.ajustes||{}, ra=remoto.ajustes||{}; res.ajustes=((ra.mod||0)>(la.mod||0))?ra:la;
     return res;
   },
   idsReferenciados(){ const ids=new Set(); datos.pinturas.forEach(p=>(p.fotos||[]).forEach(f=>ids.add(f))); datos.obras.forEach(o=>{ o.pasos.forEach(p=>ids.add(p.foto)); if(o.final) ids.add(o.final); }); datos.exposiciones.forEach(x=>(x.adjuntos||[]).forEach(a=>ids.add(a.archivoId))); datos.fotosRef.forEach(f=>{ if(f.foto) ids.add(f.foto); (f.fotos||[]).forEach(x=>ids.add(x)); }); [...datos.pintores,...datos.apuntes].forEach(x=>(x.adjuntos||[]).forEach(a=>ids.add(a.archivoId))); [...datos.pinceles,...datos.paletas].forEach(p=>(p.fotos||[]).forEach(f=>ids.add(f))); if(datos.ajustes&&datos.ajustes.portada) ids.add(datos.ajustes.portada); ids.delete(undefined); ids.delete(null); ids.delete(''); return ids; },
@@ -1731,10 +1739,51 @@ $('#importar-colores-file').addEventListener('change',async e=>{
     filas=filas.filter(f=>f.some(c=>String(c).trim()!==''));
     if(filas.length<2){ alert('El archivo no tiene datos suficientes (cabecera + al menos una fila).'); return; }
     impFilasRaw=filas;
+    // Vía rápida: si las cabeceras son las de una tabla preparada por nosotros, importar directo.
+    if(importacionDirecta(filas)) return;
     aplicarCabecera();
     dlgImp.showModal();
   }catch(err){ alert('No se pudo leer el archivo: '+(err.message||err)); }
 });
+function importacionDirecta(filas){
+  const cab=filas[0].map(c=>norm(c));
+  const idx=n=>cab.indexOf(n);
+  // requisito mínimo: columnas "nombre es" y "marca" y "pigmentos"
+  const iNom=idx('nombre es'), iMarca=idx('marca'), iPig=idx('pigmentos');
+  if(iNom<0 || iMarca<0) return false; // no es nuestra plantilla -> mapeo manual
+  const col={ nombreEs:idx('nombre es'), nombreEn:idx('nombre en'), marca:idx('marca'), familia:idx('familia'),
+    subfamilia:idx('subfamilia / temperatura')>=0?idx('subfamilia / temperatura'):idx('subfamilia'),
+    pigmentos:idx('pigmentos'), pigmentoNombre:idx('nombre del pigmento'), opacidad:idx('opacidad'),
+    permanencia:idx('permanencia'), tine:idx('tine'), granula:idx('granula'), lifting:idx('lifting'),
+    serie:idx('serie'), swatch:idx('color'), notas:idx('notas') };
+  const cuerpo=filas.slice(1);
+  const marcasNuevas=new Set();
+  const pinturas=cuerpo.map(f=>{
+    const g=k=>{ const i=col[k]; return i>=0?String(f[i]??'').trim():''; };
+    const marcaTxt=g('marca'); const marcaId=idMarcaImport(marcaTxt, marcasNuevas);
+    return { id:uid(), nombreEs:g('nombreEs'), nombreEn:g('nombreEn'), marca:marcaId, familia:g('familia')||'Otro',
+      subfamilia:g('subfamilia'), pigmentos:g('pigmentos'), pigmentoNombre:g('pigmentoNombre'),
+      opacidad:g('opacidad')||'Transparente', permanencia:g('permanencia'),
+      tine:/^s/i.test(g('tine')), granula:/^s/i.test(g('granula')), lifting:g('lifting'),
+      serie:g('serie'), codigo:'', formato:'Tubo 15 ml', estado:'Lleno', cantidad:1,
+      swatch:(/^#/.test(g('swatch'))?g('swatch'):''), notas:g('notas') };
+  }).filter(p=>p.nombreEs);
+  if(!pinturas.length) return false;
+  const marca0=pinturas[0]?nombreMarca(pinturas[0].marca):'';
+  if(!confirm(`Se van a importar ${pinturas.length} colores`+(marca0?` (${marca0})`:'')+'. ¿Continuar?')) return true;
+  pinturas.forEach(p=>datos.pinturas.push(p));
+  guardar(`${pinturas.length} colores importados`); rellenarFiltros(); rellenarFiltrosCat(); pintar(); pintarCat(); pintarMarcas();
+  alert(`Importados ${pinturas.length} colores correctamente.`+(marcasNuevas.size?` Se crearon ${marcasNuevas.size} marcas nuevas.`:'')+'\n\nConsejo: pasa «Buscar duplicados» si crees que alguno ya estaba.');
+  return true;
+}
+function idMarcaImport(nombre, registro){
+  if(!nombre){ return datos.marcas[0]?.id; }
+  const n=norm(nombre);
+  let m=datos.marcas.find(x=>{ const xn=norm(x.nombre); return xn===n||xn.includes(n)||n.includes(xn); });
+  if(m) return m.id;
+  const nueva={id:uid(),nombre:String(nombre).trim(),gama:'',web:'',carta:'',pdfLocal:'',notas:'Añadida al importar una tabla.'};
+  datos.marcas.push(nueva); if(registro) registro.add(nueva.id); return nueva.id;
+}
 function prepararMapa(){
   $('#imp-info').textContent=`Archivo con ${impCols.length} columnas y ${impFilas.length} filas de datos.`;
   const opciones=i=>'<option value="-1">— (ninguna)</option>'+impCols.map((c,j)=>`<option value="${j}" ${j===i?'selected':''}>${esc(c||('Columna '+(j+1)))}</option>`).join('');
@@ -1800,7 +1849,7 @@ $('#portada').addEventListener('click',async()=>{
   const f=await elegirArchivo('image/*',true); if(!f) return;
   datos.ajustes=datos.ajustes||{};
   if(datos.ajustes.portada) await bd.borrar(datos.ajustes.portada);
-  const id=uid(); await bd.guardar(id, await reducirImagen(f,2200)); datos.ajustes.portada=id;
+  const id=uid(); await bd.guardar(id, await reducirImagen(f,2200)); datos.ajustes.portada=id; datos.ajustes.mod=Date.now();
   guardar('Foto de portada actualizada'); pintarPortada();
 });
 $('#btn-utilidades').addEventListener('click',()=>$('#dlg-utilidades').showModal());
