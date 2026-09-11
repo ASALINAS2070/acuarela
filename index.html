@@ -21,7 +21,8 @@
     --r:6px;
   }
   *{box-sizing:border-box}
-  html,body{margin:0;background:var(--papel);color:var(--tinta);font:16px/1.5 -apple-system,"Helvetica Neue",Helvetica,Arial,sans-serif;-webkit-text-size-adjust:100%}
+  html,body{height:100%}
+  body{margin:0;height:100dvh;display:flex;flex-direction:column;overflow:hidden;background:var(--papel);color:var(--tinta);font:16px/1.5 -apple-system,"Helvetica Neue",Helvetica,Arial,sans-serif;-webkit-text-size-adjust:100%}
   h1,h2,h3,.serif{font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;font-weight:500;letter-spacing:-.01em}
   a{color:var(--ultramar)}
   button{font:inherit;cursor:pointer}
@@ -29,7 +30,7 @@
   input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid var(--ultramar);outline-offset:1px}
   textarea{min-height:70px;resize:vertical}
 
-  header{position:sticky;top:0;z-index:5;background:var(--papel);border-bottom:1px solid var(--linea);padding:env(safe-area-inset-top) 0 0}
+  header{flex:0 0 auto;z-index:30;background:var(--papel);border-bottom:1px solid var(--linea);padding:env(safe-area-inset-top) 0 0}
   .barra{max-width:1080px;margin:0 auto;padding:12px 16px 0;display:flex;align-items:baseline;gap:16px;flex-wrap:wrap}
   .barra h1{margin:0;font-size:22px}
   .barra h1 small{font-family:inherit;font-size:13px;color:var(--gris);margin-left:8px}
@@ -38,7 +39,7 @@
   nav button[aria-selected=true]{color:var(--tinta);border-bottom-color:var(--ultramar)}
   nav button.pronto{opacity:.5}
 
-  main{max-width:1080px;margin:0 auto;padding:16px 16px 100px}
+  main{flex:1 1 auto;overflow-y:auto;-webkit-overflow-scrolling:touch;width:100%;max-width:1080px;margin:0 auto;padding:16px 16px 100px}
   .oculto{display:none!important}
 
   .herr{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
@@ -51,7 +52,7 @@
   .cuenta{color:var(--gris);font-size:14px;margin:0 0 10px}
 
   /* lista de pinturas: la muestra de color es el elemento protagonista */
-  .lista{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px}
+  .lista{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px;position:relative;z-index:0}
   .tubo{display:grid;grid-template-columns:56px 1fr;gap:12px;background:#fff;border:1px solid var(--linea);border-radius:var(--r);padding:10px;text-align:left;color:inherit;align-items:start}
   .tubo:hover{border-color:var(--ultramar)}
   .muestra{width:56px;height:132px;border-radius:4px;position:relative;overflow:hidden;background:#ddd}
@@ -105,7 +106,7 @@
   .sub{display:flex;gap:4px;margin-bottom:12px;flex-wrap:wrap}
   .sub button{background:#fff;border:1px solid var(--linea);border-radius:99px;padding:6px 14px;color:var(--gris)}
   .sub button[aria-pressed=true]{background:var(--tinta);color:#fff;border-color:var(--tinta)}
-  .obras{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}
+  .obras{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;position:relative;z-index:0}
   .obra{background:#fff;border:1px solid var(--linea);border-radius:var(--r);padding:0;overflow:hidden;text-align:left;color:inherit;cursor:pointer}
   .obra .img{aspect-ratio:4/3;background:var(--papel-2);display:flex;align-items:center;justify-content:center;color:var(--gris);font-size:13px;overflow:hidden}
   .obra img{width:100%;height:100%;object-fit:cover;display:block}
@@ -205,21 +206,25 @@
   .drop-zona .drop-t{font-family:"Iowan Old Style",Palatino,Georgia,serif;font-size:20px;margin:10px 0 4px}
   .drop-zona .drop-s{font-size:14px;color:var(--gris);margin:0}
 
-  .filtros-fijos{position:sticky;top:0;z-index:4;background:var(--papel);padding-top:8px;padding-bottom:8px;box-shadow:0 6px 10px -8px rgba(0,0,0,.25)}
+  .filtros-fijos{position:sticky;top:-16px;z-index:20;background:var(--papel);padding:10px 0;margin:0 0 6px;box-shadow:0 6px 10px -6px rgba(0,0,0,.28)}
 
-  #dlg-zoom{width:100vw;max-width:100vw;height:100dvh;max-height:100dvh;border:0;padding:0;background:#111}
-  #dlg-zoom::backdrop{background:rgba(0,0,0,.6)}
-  .zoom-wrap{display:flex;flex-direction:column;height:100dvh}
-  .zoom-scroll{flex:1;overflow:auto;display:flex;align-items:center;justify-content:center;background:#111;-webkit-overflow-scrolling:touch}
-  #zoom-img{transform-origin:center center;max-width:100%;max-height:100%;transition:transform .05s;display:block}
-  .zoom-barra{flex:0 0 auto;display:flex;gap:8px;padding:10px 12px calc(10px + env(safe-area-inset-bottom));background:#1c1c1c}
+  #dlg-zoom{width:100vw;max-width:100vw;height:100dvh;max-height:100dvh;border:0;padding:0;background:#111;overflow:hidden;touch-action:none}
+  #dlg-zoom::backdrop{background:rgba(0,0,0,.85)}
+  .zoom-wrap{display:flex;flex-direction:column;height:100dvh;overflow:hidden}
+  .zoom-scroll{flex:1;overflow:auto;display:flex;align-items:center;justify-content:center;background:#111;-webkit-overflow-scrolling:touch;min-height:0}
+  #zoom-img{transform-origin:center center;max-width:100%;max-height:100%;transition:transform .08s;display:block;user-select:none;-webkit-user-drag:none}
+  .zoom-barra{flex:0 0 auto;display:flex;gap:8px;padding:12px 14px calc(12px + env(safe-area-inset-bottom));background:#1c1c1c;position:sticky;bottom:0;z-index:2}
+  .zoom-barra .btn{min-width:52px}
+
+  select.filtro-sin:has(option[value=""]:checked){color:var(--gris)}
+  select.filtro-sin{color:var(--tinta)}
 </style>
 </head>
 <body>
 
 <header>
   <div class="barra">
-    <h1>Estudio de acuarela <small id="resumen"></small><small style="color:var(--siena)">versión 27 · papel, zoom y limpieza</small><small id="dbx-punto" title="Estado de Dropbox"></small></h1>
+    <h1>Estudio de acuarela <small id="resumen"></small><small style="color:var(--siena)">versión 30 · scroll interno</small><small id="dbx-punto" title="Estado de Dropbox"></small></h1>
   </div>
   <nav role="tablist">
     <button role="tab" aria-selected="false" data-tab="inicio">Inicio</button>
@@ -262,12 +267,12 @@
     <input type="search" id="buscar" placeholder="Buscar por nombre, pigmento, marca…" autocomplete="off">
     <select id="f-marca"><option value="">Todas las marcas</option></select>
     <select id="f-familia"><option value="">Todos los colores</option></select>
-    <select id="f-opacidad">
-      <option value="">Cualquier opacidad</option>
+    <select id="f-opacidad" class="filtro-sin">
+      <option value="">Opacidad</option>
       <option>Transparente</option><option>Semitransparente</option><option>Semiopaco</option><option>Opaco</option>
     </select>
-    <select id="f-tine">
-      <option value="">Tiñe: todos</option><option value="si">Tiñe</option><option value="no">No tiñe</option>
+    <select id="f-tine" class="filtro-sin">
+      <option value="">Tiñe</option><option value="si">Sí tiñe</option><option value="no">No tiñe</option>
     </select>
     <select id="orden">
       <option value="familia">Ordenar por color</option>
@@ -293,9 +298,9 @@
     <input type="search" id="c-buscar" placeholder="Buscar por nombre o pigmento…" autocomplete="off">
     <select id="c-marca"><option value="">Todas las marcas</option></select>
     <select id="c-familia"><option value="">Todos los colores</option></select>
-    <select id="c-opacidad"><option value="">Cualquier opacidad</option><option>Transparente</option><option>Semitransparente</option><option>Semiopaco</option><option>Opaco</option></select>
-    <select id="c-tine"><option value="">Tiñe: todos</option><option value="si">Tiñe</option><option value="no">No tiñe</option></select>
-    <select id="c-gran"><option value="">Granula: todos</option><option value="si">Granula</option><option value="no">No granula</option></select>
+    <select id="c-opacidad" class="filtro-sin"><option value="">Opacidad</option><option>Transparente</option><option>Semitransparente</option><option>Semiopaco</option><option>Opaco</option></select>
+    <select id="c-tine" class="filtro-sin"><option value="">Tiñe</option><option value="si">Sí tiñe</option><option value="no">No tiñe</option></select>
+    <select id="c-gran" class="filtro-sin"><option value="">Granula</option><option value="si">Sí granula</option><option value="no">No granula</option></select>
   </div>
   <p class="cuenta" id="c-cuenta"></p>
   <div class="lista" id="c-lista"></div>
@@ -603,8 +608,8 @@
      <button class="btn" id="exportar-fotos">Exportar copia completa con fotos</button>
      <button class="btn sec" id="importar-btn">Importar copia…</button>
      <input type="file" id="importar" accept=".json,application/json" class="oculto"></p>
-  <p><button class="btn sec" id="exportar-csv">Exportar pinturas a CSV</button>
-     <button class="btn sec" id="exportar-xlsx">Exportar pinturas a Excel (.xlsx)</button></p>
+  <p><button class="btn sec" id="exportar-csv">Exportar colores a CSV</button>
+     <button class="btn sec" id="exportar-xlsx">Exportar colores a Excel (.xlsx)</button></p>
   <p style="margin-top:28px"><button class="btn peligro" id="borrar-todo">Borrar todos los datos de este dispositivo</button></p>
   <p class="cuenta" id="estado-guardado"></p>
 </section>
@@ -899,6 +904,7 @@ $$('nav [data-tab]').forEach(b=>b.addEventListener('click',()=>{
   $$('nav [data-tab]').forEach(x=>x.setAttribute('aria-selected',x===b));
   TABS.forEach(t=>$('#tab-'+t).classList.toggle('oculto',t!==b.dataset.tab));
   document.querySelector('nav[role=tablist]').classList.toggle('oculto', b.dataset.tab==='inicio');
+  const m=document.querySelector('main'); if(m) m.scrollTop=0;
 }));
 
 /* ---------- lista de pinturas ---------- */
@@ -2135,6 +2141,8 @@ $('#zoom-reset').addEventListener('click',()=>{ zoomEscala=1; aplicarZoom(); });
 $('#zoom-cerrar').addEventListener('click',()=>$('#dlg-zoom').close());
 $('#zoom-img').addEventListener('dblclick',()=>{ zoomEscala = zoomEscala>1?1:2.5; aplicarZoom(); });
 $('#dlg-zoom').addEventListener('cancel',()=>{});
+
+(function(){ const sels=document.querySelectorAll('select.filtro-sin'); const upd=s=>{ s.style.color = (s.value==='')?'var(--gris)':'var(--tinta)'; }; sels.forEach(s=>{ upd(s); s.addEventListener('change',()=>upd(s)); }); })();
 
 /* ---------- arranque ---------- */
 cargar(); datos.ajustes=datos.ajustes||{}; tomarInstantanea(); rellenarFiltros(); rellenarFiltrosCat(); pintarMarcas(); pintar(); pintarCat(); pintarObra(); pintarBiblio(); pintarTiendas(); pintarMarcasPinceles(); pintarPinceles(); pintarPaletas(); estadoGuardado(); dbx.init(); irA('inicio'); pintarPortada(); actualizarBotonesDeshacer();
