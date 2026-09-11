@@ -206,13 +206,20 @@
   .drop-zona .drop-s{font-size:14px;color:var(--gris);margin:0}
 
   .filtros-fijos{position:sticky;top:0;z-index:4;background:var(--papel);padding-top:8px;padding-bottom:8px;box-shadow:0 6px 10px -8px rgba(0,0,0,.25)}
+
+  #dlg-zoom{width:100vw;max-width:100vw;height:100dvh;max-height:100dvh;border:0;padding:0;background:#111}
+  #dlg-zoom::backdrop{background:rgba(0,0,0,.6)}
+  .zoom-wrap{display:flex;flex-direction:column;height:100dvh}
+  .zoom-scroll{flex:1;overflow:auto;display:flex;align-items:center;justify-content:center;background:#111;-webkit-overflow-scrolling:touch}
+  #zoom-img{transform-origin:center center;max-width:100%;max-height:100%;transition:transform .05s;display:block}
+  .zoom-barra{flex:0 0 auto;display:flex;gap:8px;padding:10px 12px calc(10px + env(safe-area-inset-bottom));background:#1c1c1c}
 </style>
 </head>
 <body>
 
 <header>
   <div class="barra">
-    <h1>Estudio de acuarela <small id="resumen"></small><small style="color:var(--siena)">versión 26 · Obra, catálogo y portada</small><small id="dbx-punto" title="Estado de Dropbox"></small></h1>
+    <h1>Estudio de acuarela <small id="resumen"></small><small style="color:var(--siena)">versión 27 · papel, zoom y limpieza</small><small id="dbx-punto" title="Estado de Dropbox"></small></h1>
   </div>
   <nav role="tablist">
     <button role="tab" aria-selected="false" data-tab="inicio">Inicio</button>
@@ -251,7 +258,7 @@
 
 <!-- ================= PINTURAS ================= -->
 <section id="tab-pinturas">
-  <div class="herr">
+  <div class="herr filtros-fijos">
     <input type="search" id="buscar" placeholder="Buscar por nombre, pigmento, marca…" autocomplete="off">
     <select id="f-marca"><option value="">Todas las marcas</option></select>
     <select id="f-familia"><option value="">Todos los colores</option></select>
@@ -272,7 +279,6 @@
     <button class="btn sec" id="importar-colores">Importar Excel/CSV</button>
     <button class="btn sec" id="buscar-duplicados">Buscar duplicados</button>
     <button class="btn sec oculto" id="deshacer-import">Deshacer última importación</button>
-    <button class="btn sec" id="borrar-por-marca">Borrar colores por marca</button>
     <input type="file" id="importar-colores-file" accept=".xlsx,.xls,.xlsm,.csv,.tsv,text/csv,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" class="oculto">
   </div>
   <p class="cuenta" id="cuenta"></p>
@@ -341,7 +347,12 @@
       <div><label>Fecha de fin</label><input name="fin" type="date"></div>
       <div><label>Tema</label><select name="tema"><option>Paisaje</option><option>Marina</option><option>Urbano</option><option>Retrato / figura</option><option>Bodegón</option><option>Flores</option><option>Animales</option><option>Abstracto</option><option>Apunte del natural</option><option>Otro</option></select></div>
       <div><label>Medidas (cm)</label><input name="medidas" placeholder="38 × 56"></div>
-      <div><label>Papel</label><input name="papel" list="papeles" placeholder="Arches 300 g grano fino"><datalist id="papeles"></datalist></div>
+      <div><label>Papel</label>
+        <div style="display:flex;gap:6px">
+          <select name="papel" id="sel-papel" style="flex:1"></select>
+          <button type="button" class="btn sec" id="papel-mas" title="Añadir un papel a la lista" style="flex:0 0 auto;padding:9px 12px">+</button>
+          <button type="button" class="btn sec" id="papel-menos" title="Quitar el papel elegido de la lista" style="flex:0 0 auto;padding:9px 12px">–</button>
+        </div></div>
       <div><label>Estado</label><select name="estado"><option>En curso</option><option>Terminado</option><option>Vendido</option><option>Regalado</option><option>Abandonado</option></select></div>
       <div class="ancho"><label>Colores usados (de mis tubos)</label>
         <input type="search" id="paleta-buscar" placeholder="Buscar en mis tubos para añadir…" autocomplete="off" style="margin-bottom:6px">
@@ -676,6 +687,19 @@
   </form>
 </dialog>
 
+<dialog id="dlg-zoom">
+  <div class="zoom-wrap">
+    <div class="zoom-scroll" id="zoom-scroll"><img id="zoom-img" alt=""></div>
+    <div class="zoom-barra">
+      <button type="button" class="btn sec" id="zoom-menos">−</button>
+      <button type="button" class="btn sec" id="zoom-reset">Ajustar</button>
+      <button type="button" class="btn sec" id="zoom-mas">+</button>
+      <span style="flex:1"></span>
+      <span id="zoom-txt" style="color:#fff;font-size:14px;align-self:center"></span>
+      <button type="button" class="btn" id="zoom-cerrar">Cerrar</button>
+    </div>
+  </div>
+</dialog>
 <dialog id="dlg-ver" class="ancho"><div class="hoja ficha"><div class="grande" id="ver-img"></div><div class="pie-img"><span id="ver-txt"></span><span><button class="btn sec oculto" id="ver-portada" style="padding:4px 10px;font-size:13px">Hacer portada</button> <button class="btn peligro" id="ver-borrar" style="padding:4px 10px;font-size:13px">Quitar foto</button> <button class="btn sec" id="ver-cerrar" style="padding:4px 10px;font-size:13px">Cerrar</button></span></div></div></dialog>
 <dialog id="dlg-dups-cat" class="ancho">
   <div class="hoja">
@@ -697,18 +721,7 @@
     </div>
   </div>
 </dialog>
-<dialog id="dlg-borrar-marca">
-  <form class="hoja" id="form-borrar-marca" method="dialog">
-    <h2>Borrar colores por marca</h2>
-    <div class="nota">Elimina de <b>Mis pinturas</b> todos los colores de una marca. Útil para deshacer una importación que fue al sitio equivocado. Esto no toca el catálogo de referencia.</div>
-    <div class="campos">
-      <div class="ancho"><label>Marca</label><select id="bpm-marca"></select></div>
-      <div class="ancho" id="bpm-info" style="font-size:14px;color:var(--gris)"></div>
-      <div class="check"><input type="checkbox" id="bpm-solo-sin-foto" checked><label for="bpm-solo-sin-foto" style="margin:0;color:inherit;font-size:15px">Conservar los que tengan foto de prueba (recomendado)</label></div>
-    </div>
-    <div class="pie"><div class="der"><button type="button" class="btn sec" id="bpm-cancelar">Cancelar</button><button type="button" class="btn peligro" id="bpm-borrar">Borrar los indicados</button></div></div>
-  </form>
-</dialog>
+
 <dialog id="dlg-dups" class="ancho">
   <div class="hoja">
     <h2>Colores duplicados</h2>
@@ -813,6 +826,20 @@ const EJEMPLOS = [
 const CLAVE = 'estudio-acuarela-v1';
 let datos = {pinturas:[], marcas:[], obras:[], exposiciones:[], fotosRef:[], pintores:[], apuntes:[], pinceles:[], paletas:[], marcasPinceles:[], tiendas:[], catalogo:[]};
 
+function repararIds(){
+  const vistos=new Set();
+  for(const _l of [datos.paletas,datos.pinturas,datos.obras,datos.pinceles,datos.exposiciones,datos.fotosRef,datos.pintores,datos.apuntes]){
+    if(!Array.isArray(_l)) continue;
+    for(const r of _l){ if(!r.id || r.id==='' || vistos.has(r.id)){ r.id=uid(); } vistos.add(r.id); }
+  }
+  // eliminar paletas byte-idénticas (mismo contenido salvo id) que hayan quedado duplicadas
+  if(Array.isArray(datos.paletas)){
+    const firma=p=>JSON.stringify({n:p.nombre,c:p.clase,t:p.tematica,m:p.marca,mat:p.material,col:(p.colores||[]),fo:(p.fotos||[]),com:p.comentarios});
+    const vistas=new Map(); const fuera=new Set();
+    for(const p of datos.paletas){ const f=firma(p); if(vistas.has(f)){ fuera.add(p.id); } else vistas.set(f,p.id); }
+    if(fuera.size) datos.paletas=datos.paletas.filter(p=>!fuera.has(p.id));
+  }
+}
 function cargar(){
   let ok = false;
   try{
@@ -826,7 +853,7 @@ function cargar(){
   if(!datos.marcas || !datos.marcas.length) datos.marcas = MARCAS_INICIALES.map(m=>({...m}));
   datos.obras = datos.obras||[]; datos.exposiciones = datos.exposiciones||[]; datos.fotosRef=datos.fotosRef||[]; datos.pintores=datos.pintores||[]; datos.apuntes=datos.apuntes||[];
   datos.pinceles=datos.pinceles||[]; datos.paletas=datos.paletas||[]; datos.catalogo=datos.catalogo||[]; datos.catalogoOcultos=datos.catalogoOcultos||[];
-  { const vistos=new Set(); for(const _l of [datos.paletas,datos.pinturas,datos.obras,datos.pinceles,datos.exposiciones,datos.fotosRef,datos.pintores,datos.apuntes]){ if(!Array.isArray(_l)) continue; for(const r of _l){ if(!r.id || r.id==='' || vistos.has(r.id)){ r.id=uid(); } vistos.add(r.id); } } } if(!datos.marcasPinceles||!datos.marcasPinceles.length) datos.marcasPinceles=MARCAS_PINCELES.map(m=>({...m})); if(!datos.tiendas||!datos.tiendas.length) datos.tiendas=TIENDAS_INICIALES.map(t=>({...t}));
+  repararIds(); if(!datos.marcasPinceles||!datos.marcasPinceles.length) datos.marcasPinceles=MARCAS_PINCELES.map(m=>({...m})); if(!datos.tiendas||!datos.tiendas.length) datos.tiendas=TIENDAS_INICIALES.map(t=>({...t}));
 }
 const COLECCIONES=['pinturas','marcas','obras','exposiciones','fotosRef','pintores','apuntes','pinceles','paletas','marcasPinceles','tiendas'];
 let instantanea={};
@@ -1270,10 +1297,15 @@ function abrirFormObra(id){
   if(o) for(const [k,v] of Object.entries(o)){ const el=formO.elements[k]; if(el && typeof v!=='object') el.value=v??''; }
   else formO.elements.inicio.value=hoy();
   formO._sel=o?[...(o.colores||[])]:[]; $('#paleta-buscar').value=''; pintarPaletaForm();
-  rellenarPapeles();
+  rellenarPapeles(o?(o.papel||''):'');
   dlgOF.showModal();
 }
-function rellenarPapeles(){ const set=[...new Set(datos.obras.map(o=>o.papel).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'es')); const base=['Arches 300 g grano fino','Arches 300 g grano satinado','Arches 640 g grano fino','Saunders Waterford 300 g','Fabriano Artistico 300 g','Hahnemühle 300 g','Canson Héritage 300 g']; const todos=[...new Set([...set,...base])]; const dl=document.getElementById('papeles'); if(dl) dl.innerHTML=todos.map(p=>`<option>${esc(p)}</option>`).join(''); }
+function listaPapeles(){ datos.ajustes=datos.ajustes||{}; if(!Array.isArray(datos.ajustes.papeles)){ const usados=[...new Set(datos.obras.map(o=>o.papel).filter(Boolean))]; datos.ajustes.papeles = usados.length?usados:['Arches 300 g grano fino']; } return datos.ajustes.papeles; }
+function rellenarPapeles(sel){ const lista=[...listaPapeles()].sort((a,b)=>a.localeCompare(b,'es')); const actual=sel!==undefined?sel:(formO.elements.papel.value||''); const s=$('#sel-papel'); if(!s) return; s.innerHTML='<option value="">— sin especificar —</option>'+lista.map(p=>`<option ${p===actual?'selected':''}>${esc(p)}</option>`).join(''); if(actual && !lista.includes(actual)){ s.innerHTML+=`<option selected>${esc(actual)}</option>`; } }
+document.addEventListener('click',e=>{
+  if(e.target && e.target.id==='papel-mas'){ const nom=(prompt('Nombre del papel a añadir a la lista:')||'').trim(); if(!nom) return; const l=listaPapeles(); if(!l.includes(nom)) l.push(nom); guardar('Papel añadido a la lista'); rellenarPapeles(nom); }
+  if(e.target && e.target.id==='papel-menos'){ const s=$('#sel-papel'); const val=s&&s.value; if(!val){ alert('Elige primero el papel que quieres quitar de la lista.'); return; } if(!confirm(`¿Quitar «${val}» de la lista de papeles? (No afecta a los cuadros ya guardados)`)) return; const l=listaPapeles(); const i=l.indexOf(val); if(i>=0) l.splice(i,1); guardar('Papel quitado de la lista'); rellenarPapeles(''); }
+});
 function pintarPaletaForm(){
   if(!datos.pinturas.length){ $('#paleta-obra').innerHTML='<span style="font-size:13px;color:var(--gris)">Todavía no tienes pinturas registradas. Añádelas en la pestaña Pinturas.</span>'; return; }
   const q=$('#paleta-buscar').value.trim().toLowerCase(); const sel=formO._sel||[];
@@ -1332,6 +1364,7 @@ async function abrirFicha(id, paso){
       <button class="btn sec" id="foto-final">${o.final?'Cambiar foto final':'Añadir foto final'}</button>
       <button class="btn ${o.enGaleria?'sec':''}" id="galeria-toggle">${o.enGaleria?'Retirar de la galería':'Enviar a la galería'}</button>
       <button class="btn sec" id="editar-obra">Datos del cuadro</button>
+      <button class="btn peligro" id="borrar-obra-ficha">Eliminar cuadro</button>
       <button class="btn sec" id="cerrar-ficha">Cerrar</button>
     </div>
     ${(o.colores||[]).length?`<div class="datos-obra"><b>Colores usados:</b></div><div class="paleta-usada">${o.colores.map(id=>{const p=datos.pinturas.find(x=>x.id===id);return p?`<span><i class="mini" style="display:inline-block;width:18px;height:18px;border-radius:50%;background:${esc(p.swatch||'#ccc')}"></i>${esc(p.nombreEs)}</span>`:'';}).join('')}</div>`:''}
@@ -1341,6 +1374,7 @@ async function abrirFicha(id, paso){
   if(!dlgO.open) dlgO.showModal();
   $('#cerrar-ficha').onclick=()=>dlgO.close();
   $('#editar-obra').onclick=()=>abrirFormObra(id);
+  $('#borrar-obra-ficha').onclick=async()=>{ const o2=datos.obras.find(x=>x.id===id); if(!o2) return; if(!confirm(`¿Eliminar «${o2.titulo}» y todas sus fotos?`)) return; for(const p of (o2.pasos||[])) await bd.borrar(p.foto); if(o2.final) await bd.borrar(o2.final); datos.obras=datos.obras.filter(x=>x.id!==id); datos.exposiciones.forEach(x=>x.obras=x.obras.filter(i=>i!==id)); dlgO.close(); guardar('Cuadro eliminado'); pintarObra(); };
   $('#pasos')?.addEventListener('click',e=>{ const b=e.target.closest('.paso'); if(b) abrirFicha(id,+b.dataset.paso); });
   $('#foto-progreso').onclick=async()=>{
     const f=await elegirArchivo('image/*',true); if(!f) return;
@@ -1485,7 +1519,7 @@ $('#fr-estrellas').innerHTML=[1,2,3,4,5].map(n=>`<button type="button" data-n="$
 function pintarEstrellas(n){ formFR.elements.estrellas.value=n; $$('#fr-estrellas button').forEach(b=>b.classList.toggle('on',+b.dataset.n<=n)); }
 $('#fr-estrellas').addEventListener('click',e=>{ const b=e.target.closest('[data-n]'); if(b) pintarEstrellas(+b.dataset.n); });
 async function abrirFotoRef(id){
-  const f=id?datos.fotosRef.find(x=>x.id===id):null;
+  const f=(id!=null&&id!=='')?datos.fotosRef.find(x=>x.id===id):null;
   formFR.reset(); $('#dlg-foto-ref-titulo').textContent=f?'Foto para pintar':'Nueva foto o apunte'; $('#fr-eliminar').classList.toggle('oculto',!f);
   $('#fr-obra').innerHTML='<option value="">—</option>'+datos.obras.map(o=>`<option value="${esc(o.id)}">${esc(o.titulo)}</option>`).join('');
   if(f) for(const [k,v] of Object.entries(f)){ const el=formFR.elements[k]; if(el) el.value=v??''; } else formFR.elements.fecha.value=hoy();
@@ -1496,29 +1530,27 @@ async function abrirFotoRef(id){
 }
 async function pintarFotosRef(){
   const grande=$('#fr-img'); const first=formFR._fotos[0];
+  grande.style.cursor = first?'zoom-in':'default';
   grande.innerHTML = first ? `<img src="${await urlDe(first)}" alt="">` : '<div class="vacia">Añade una o varias fotos, con la cámara o desde la fototeca.</div>';
+  grande.onclick = first ? (()=>abrirVisorZoom(formFR._fotos, 0, formFR.elements.titulo.value||'Foto')) : null;
   const t=await Promise.all(formFR._fotos.map(async (id,i)=>`<button type="button" class="paso ${i===0?'final':''}" data-vf="${i}"><img src="${await urlDe(id)}" alt=""><span>${i===0?'Portada':'Foto '+(i+1)}</span></button>`));
   $('#fr-fotos').innerHTML=t.join('');
 }
 $('#fr-cambiar').addEventListener('click',async()=>{ const f=await elegirArchivo('image/*',true); if(!f) return; const id=uid(); await bd.guardar(id, await reducirImagen(f,2000)); formFR._fotos.push(id); await pintarFotosRef(); });
-$('#fr-fotos').addEventListener('click',async e=>{ const b=e.target.closest('[data-vf]'); if(!b) return; const i=+b.dataset.vf;
-  $('#ver-img').innerHTML=`<img src="${await urlDe(formFR._fotos[i])}" alt="">`; $('#ver-txt').textContent=(formFR.elements.titulo.value||'')+' — foto '+(i+1);
-  $('#ver-borrar').onclick=async()=>{ if(!confirm('¿Quitar esta foto?')) return; await bd.borrar(formFR._fotos[i]); formFR._fotos.splice(i,1); $('#dlg-ver').close(); await pintarFotosRef(); };
-  const extra=document.getElementById('ver-portada'); if(extra){ extra.classList.toggle('oculto', i===0); extra.onclick=async()=>{ const x=formFR._fotos.splice(i,1)[0]; formFR._fotos.unshift(x); $('#dlg-ver').close(); await pintarFotosRef(); }; }
-  $('#ver-cerrar').onclick=()=>$('#dlg-ver').close(); $('#dlg-ver').showModal(); });
+$('#fr-fotos').addEventListener('click',async e=>{ const b=e.target.closest('[data-vf]'); if(!b) return; const i=+b.dataset.vf; abrirVisorZoom(formFR._fotos, i, formFR.elements.titulo.value||'Foto'); });
 formFR.addEventListener('submit',e=>{ e.preventDefault(); const d={}; for(const el of formFR.elements){ if(el.name) d[el.name]=el.value.trim(); } d.estrellas=+d.estrellas; d.fotos=formFR._fotos||[]; d.foto=d.fotos[0]||null;
   let f=d.id?datos.fotosRef.find(x=>x.id===d.id):null; if(!f){ f={id:uid()}; datos.fotosRef.push(f); } Object.assign(f,d); dlgFR.close(); guardar('Guardado'); pintarBiblio(); });
 $('#fr-eliminar').addEventListener('click',async()=>{ const id=formFR.elements.id.value; if(!confirm('¿Eliminar esta ficha y sus fotos?')) return; const f=datos.fotosRef.find(x=>x.id===id); for(const ff of (f.fotos&&f.fotos.length?f.fotos:(f.foto?[f.foto]:[]))) await bd.borrar(ff); datos.fotosRef=datos.fotosRef.filter(x=>x.id!==id); dlgFR.close(); guardar('Eliminada'); pintarBiblio(); });
 const dlgP=$('#dlg-pintor'), formP=$('#form-pintor'), adjP=gestorAdjuntos('#pintor-adjunto','#pintor-adjuntos');
 $('#pintor-cancelar').addEventListener('click',()=>dlgP.close());
-function abrirPintor(id){ const p=id?datos.pintores.find(x=>x.id===id):null; formP.reset(); $('#dlg-pintor-titulo').textContent=p?p.nombre:'Nuevo pintor'; $('#pintor-eliminar').classList.toggle('oculto',!p);
+function abrirPintor(id){ const p=(id!=null&&id!=='')?datos.pintores.find(x=>x.id===id):null; formP.reset(); $('#dlg-pintor-titulo').textContent=p?p.nombre:'Nuevo pintor'; $('#pintor-eliminar').classList.toggle('oculto',!p);
   if(p) for(const [k,v] of Object.entries(p)){ const el=formP.elements[k]; if(el&&typeof v!=='object') el.value=v??''; } adjP.set(p?p.adjuntos||[]:[]); dlgP.showModal(); }
 formP.addEventListener('submit',e=>{ e.preventDefault(); const d={}; for(const el of formP.elements){ if(el.name) d[el.name]=el.value.trim(); } d.adjuntos=adjP.lista;
   let p=d.id?datos.pintores.find(x=>x.id===d.id):null; if(!p){ p={id:uid()}; datos.pintores.push(p); } Object.assign(p,d); dlgP.close(); guardar('Pintor guardado'); pintarBiblio(); });
 $('#pintor-eliminar').addEventListener('click',async()=>{ const id=formP.elements.id.value; if(!confirm('¿Eliminar este pintor?')) return; const p=datos.pintores.find(x=>x.id===id); for(const a of (p.adjuntos||[])) await bd.borrar(a.archivoId); datos.pintores=datos.pintores.filter(x=>x.id!==id); dlgP.close(); guardar('Eliminado'); pintarBiblio(); });
 const dlgA=$('#dlg-apunte'), formA=$('#form-apunte'), adjA=gestorAdjuntos('#apunte-adjunto','#apunte-adjuntos');
 $('#apunte-cancelar').addEventListener('click',()=>dlgA.close());
-function abrirApunte(id){ const a=id?datos.apuntes.find(x=>x.id===id):null; formA.reset(); $('#dlg-apunte-titulo').textContent=a?'Apunte':'Nuevo apunte'; $('#apunte-eliminar').classList.toggle('oculto',!a);
+function abrirApunte(id){ const a=(id!=null&&id!=='')?datos.apuntes.find(x=>x.id===id):null; formA.reset(); $('#dlg-apunte-titulo').textContent=a?'Apunte':'Nuevo apunte'; $('#apunte-eliminar').classList.toggle('oculto',!a);
   if(a) for(const [k,v] of Object.entries(a)){ const el=formA.elements[k]; if(el&&typeof v!=='object') el.value=v??''; } adjA.set(a?a.adjuntos||[]:[]); dlgA.showModal(); }
 formA.addEventListener('submit',e=>{ e.preventDefault(); const d={}; for(const el of formA.elements){ if(el.name) d[el.name]=el.value.trim(); } d.adjuntos=adjA.lista;
   let a=d.id?datos.apuntes.find(x=>x.id===d.id):null; if(!a){ a={id:uid()}; datos.apuntes.push(a); } Object.assign(a,d); dlgA.close(); guardar('Apunte guardado'); pintarBiblio(); });
@@ -1596,7 +1628,7 @@ const dlgP2=$('#dlg-pincel'), formP2=$('#form-pincel');
 $('#nuevo-pincel').addEventListener('click',()=>abrirPincel(null)); $('#cancelar-pincel').addEventListener('click',()=>dlgP2.close());
 $('#pincel-desde-cat').addEventListener('click',()=>{ dlgP2.close(); modoCatP='elegir'; $$('#tab-pinceles .sub button')[1].click(); });
 function abrirPincel(id){
-  const p=id?datos.pinceles.find(x=>x.id===id):null; formP2.reset(); rellenarFiltrosPinceles();
+  const p=(id!=null&&id!=='')?datos.pinceles.find(x=>x.id===id):null; formP2.reset(); rellenarFiltrosPinceles();
   $('#dlg-pincel-titulo').textContent=p?'Editar pincel':'Nuevo pincel'; $('#eliminar-pincel').classList.toggle('oculto',!p);
   if(p) for(const [k,v] of Object.entries(p)){ const el=formP2.elements[k]; if(el&&typeof v!=='object') el.value=v??''; }
   formP2._fotos=p?[...(p.fotos||[])]:[]; pintarFotosPincel(); dlgP2.showModal();
@@ -1740,7 +1772,7 @@ const dbx = {
       marcarCambios();
       const b=await this.bajar('/datos.json'); const remoto=b?JSON.parse(await b.text()):null;
       if(remoto){ datos=this.fusionar(datos,remoto); datos.marcas=datos.marcas.length?datos.marcas:MARCAS_INICIALES.map(m=>({...m})); }
-      tomarInstantanea(); try{ localStorage.setItem(CLAVE,JSON.stringify(datos)); }catch(e){}
+      repararIds(); tomarInstantanea(); try{ localStorage.setItem(CLAVE,JSON.stringify(datos)); }catch(e){}
       const rem=await this.listarRemotos(); const ids=this.idsReferenciados(); let subidos=0;
       for(const id of ids){ if(rem[id]) continue; const blob=await bd.leer(id).catch(()=>null); if(!blob) continue; const ext=this.ext(blob); await this.subir('/fotos/'+id+'.'+ext,blob); rem[id]=ext; subidos++; }
       for(const a of (datos.archivosBorrados||[])){ if(rem[a.id] && !ids.has(a.id)){ await this.rpc('files/delete_v2',{path:'/fotos/'+a.id+'.'+rem[a.id]}).catch(()=>{}); delete rem[a.id]; } }
@@ -1974,32 +2006,7 @@ $('#btn-salir').addEventListener('click',()=>{
 $('#cat-importar-excel').addEventListener('click',()=>{ importDestino='catalogo'; if(typeof XLSX==='undefined'){ alert('Necesitas conexión a internet la primera vez para preparar la lectura de Excel.'); return; } $('#importar-colores-file').click(); });
 
 $('#deshacer-import').addEventListener('click',deshacerUltimaImportacion);
-const dlgBPM=$('#dlg-borrar-marca');
-$('#borrar-por-marca').addEventListener('click',()=>{
-  const ms=[...datos.marcas].sort((a,b)=>a.nombre.localeCompare(b.nombre,'es'));
-  $('#bpm-marca').innerHTML=ms.map(m=>{ const n=datos.pinturas.filter(p=>p.marca===m.id).length; return `<option value="${esc(m.id)}">${esc(m.nombre)} (${n})</option>`; }).join('');
-  bpmActualizarInfo(); dlgBPM.showModal();
-});
-function bpmActualizarInfo(){
-  const id=$('#bpm-marca').value; const soloSinFoto=$('#bpm-solo-sin-foto').checked;
-  const total=datos.pinturas.filter(p=>p.marca===id).length;
-  const aBorrar=datos.pinturas.filter(p=>p.marca===id && !(soloSinFoto && (p.fotos||[]).length)).length;
-  $('#bpm-info').textContent=`Esta marca tiene ${total} colores en Mis pinturas. Se borrarían ${aBorrar}.`;
-}
-$('#bpm-marca').addEventListener('change',bpmActualizarInfo);
-$('#bpm-solo-sin-foto').addEventListener('change',bpmActualizarInfo);
-$('#bpm-cancelar').addEventListener('click',()=>dlgBPM.close());
-$('#bpm-borrar').addEventListener('click',async()=>{
-  const id=$('#bpm-marca').value; const soloSinFoto=$('#bpm-solo-sin-foto').checked;
-  const nombre=nombreMarca(id);
-  const borrar=datos.pinturas.filter(p=>p.marca===id && !(soloSinFoto && (p.fotos||[]).length));
-  if(!borrar.length){ alert('No hay colores que borrar con ese criterio.'); return; }
-  if(!confirm(`Se van a borrar ${borrar.length} colores de ${nombre} de Mis pinturas. ¿Continuar?`)) return;
-  const set=new Set(borrar.map(p=>p.id));
-  for(const p of borrar){ for(const f of (p.fotos||[])) await bd.borrar(f); }
-  datos.pinturas=datos.pinturas.filter(p=>!set.has(p.id));
-  dlgBPM.close(); guardar(`${borrar.length} colores de ${nombre} borrados`); rellenarFiltros(); rellenarFiltrosCat(); pintar(); pintarCat(); pintarMarcas();
-});
+
 $('#deshacer-import-cat').addEventListener('click',deshacerUltimaImportacion);
 const dlgDupsCat=$('#dlg-dups-cat');
 $('#buscar-dup-cat').addEventListener('click',()=>{ pintarDuplicadosCat(); dlgDupsCat.showModal(); });
@@ -2111,6 +2118,23 @@ $('#dup-eliminar').addEventListener('click',async()=>{
   guardar(`${ids.length} duplicados eliminados`); rellenarFiltros(); rellenarFiltrosCat(); pintar(); pintarCat(); pintarMarcas();
   pintarDuplicados();
 });
+
+/* ---------- visor con zoom ---------- */
+let zoomEscala=1, zoomFotos=[], zoomIdx=0;
+async function abrirVisorZoom(fotos, idx, titulo){
+  zoomFotos=fotos||[]; zoomIdx=idx||0; zoomEscala=1;
+  const u=await urlDe(zoomFotos[zoomIdx]); if(!u){ toast('No se pudo cargar la imagen'); return; }
+  $('#zoom-img').src=u; $('#zoom-img').style.transform='scale(1)';
+  $('#zoom-txt').textContent=(titulo||'')+(zoomFotos.length>1?` (${zoomIdx+1}/${zoomFotos.length})`:'');
+  $('#dlg-zoom').showModal();
+}
+function aplicarZoom(){ zoomEscala=Math.max(1,Math.min(6,zoomEscala)); $('#zoom-img').style.transform='scale('+zoomEscala+')'; $('#zoom-scroll').style.cursor=zoomEscala>1?'grab':'default'; }
+$('#zoom-mas').addEventListener('click',()=>{ zoomEscala+=0.5; aplicarZoom(); });
+$('#zoom-menos').addEventListener('click',()=>{ zoomEscala-=0.5; aplicarZoom(); });
+$('#zoom-reset').addEventListener('click',()=>{ zoomEscala=1; aplicarZoom(); });
+$('#zoom-cerrar').addEventListener('click',()=>$('#dlg-zoom').close());
+$('#zoom-img').addEventListener('dblclick',()=>{ zoomEscala = zoomEscala>1?1:2.5; aplicarZoom(); });
+$('#dlg-zoom').addEventListener('cancel',()=>{});
 
 /* ---------- arranque ---------- */
 cargar(); datos.ajustes=datos.ajustes||{}; tomarInstantanea(); rellenarFiltros(); rellenarFiltrosCat(); pintarMarcas(); pintar(); pintarCat(); pintarObra(); pintarBiblio(); pintarTiendas(); pintarMarcasPinceles(); pintarPinceles(); pintarPaletas(); estadoGuardado(); dbx.init(); irA('inicio'); pintarPortada(); actualizarBotonesDeshacer();
