@@ -112,8 +112,8 @@
   .obra .txt{padding:8px 10px 10px}
   .obra h3{margin:0;font-size:16px;line-height:1.2}
   .obra .meta{font-size:12px;color:var(--gris);margin-top:3px}
-  .ficha .grande{background:#2a2825;border-radius:var(--r);display:flex;align-items:center;justify-content:center;min-height:200px;max-height:60vh;overflow:hidden;position:relative}
-  .ficha .grande img{max-width:100%;max-height:60vh;display:block}
+  .ficha .grande{background:#2a2825;border-radius:var(--r);display:flex;align-items:center;justify-content:center;min-height:160px;max-height:62vh;overflow:auto;position:relative}
+  .ficha .grande img{max-width:100%;max-height:60vh;width:auto;height:auto;object-fit:contain;display:block}
   .ficha .grande .vacia{color:#bbb;font-size:14px;padding:30px}
   .ficha .pie-img{display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--gris);margin:6px 0 10px;gap:8px;flex-wrap:wrap}
   .pasos{display:flex;gap:8px;overflow-x:auto;padding:6px 0 10px;scroll-snap-type:x mandatory}
@@ -139,6 +139,18 @@
   .paleta-usada span{display:inline-flex;align-items:center;gap:6px;font-size:13px;background:#fff;border:1px solid var(--linea);border-radius:99px;padding:2px 9px 2px 3px}
   .adjuntos a{display:inline-block;margin:2px 8px 2px 0;font-size:14px}
   dialog.ancho{width:min(900px,100vw)}
+  #dlg-ver{width:min(900px,96vw);max-height:92vh}
+  #dlg-ver .hoja{display:flex;flex-direction:column;max-height:90vh}
+  #dlg-ver .grande{flex:1 1 auto;min-height:0;max-height:74vh}
+  #dlg-ver .grande img{max-height:72vh}
+  #dlg-ver .pie-img{flex:0 0 auto;padding-top:8px;position:sticky;bottom:0;background:var(--papel)}
+  @media (max-width:600px){
+    dialog, dialog.ancho, #dlg-ver{width:100vw;max-width:100vw;height:100dvh;max-height:100dvh;border-radius:0}
+    #dlg-ver .hoja{max-height:100dvh}
+    #dlg-ver .grande{max-height:none}
+    #dlg-ver .grande img{max-height:70dvh}
+    .hoja{max-height:100dvh;overflow:auto}
+  }
 
   .estrellas{color:var(--siena);letter-spacing:1px;font-size:14px}
   .estrellas-sel{display:flex;gap:4px}
@@ -198,7 +210,7 @@
 
 <header>
   <div class="barra">
-    <h1>Estudio de acuarela <small id="resumen"></small><small style="color:var(--siena)">versión 24 · duplicados en catálogo</small><small id="dbx-punto" title="Estado de Dropbox"></small></h1>
+    <h1>Estudio de acuarela <small id="resumen"></small><small style="color:var(--siena)">versión 25 · fotos, paletas y duplicados</small><small id="dbx-punto" title="Estado de Dropbox"></small></h1>
   </div>
   <nav role="tablist">
     <button role="tab" aria-selected="false" data-tab="inicio">Inicio</button>
@@ -811,7 +823,8 @@ function cargar(){
   }
   if(!datos.marcas || !datos.marcas.length) datos.marcas = MARCAS_INICIALES.map(m=>({...m}));
   datos.obras = datos.obras||[]; datos.exposiciones = datos.exposiciones||[]; datos.fotosRef=datos.fotosRef||[]; datos.pintores=datos.pintores||[]; datos.apuntes=datos.apuntes||[];
-  datos.pinceles=datos.pinceles||[]; datos.paletas=datos.paletas||[]; datos.catalogo=datos.catalogo||[]; if(!datos.marcasPinceles||!datos.marcasPinceles.length) datos.marcasPinceles=MARCAS_PINCELES.map(m=>({...m})); if(!datos.tiendas||!datos.tiendas.length) datos.tiendas=TIENDAS_INICIALES.map(t=>({...t}));
+  datos.pinceles=datos.pinceles||[]; datos.paletas=datos.paletas||[]; datos.catalogo=datos.catalogo||[];
+  { const vistos=new Set(); for(const _l of [datos.paletas,datos.pinturas,datos.obras,datos.pinceles,datos.exposiciones,datos.fotosRef,datos.pintores,datos.apuntes]){ if(!Array.isArray(_l)) continue; for(const r of _l){ if(!r.id || vistos.has(r.id)){ r.id=uid(); } vistos.add(r.id); } } } if(!datos.marcasPinceles||!datos.marcasPinceles.length) datos.marcasPinceles=MARCAS_PINCELES.map(m=>({...m})); if(!datos.tiendas||!datos.tiendas.length) datos.tiendas=TIENDAS_INICIALES.map(t=>({...t}));
 }
 const COLECCIONES=['pinturas','marcas','obras','exposiciones','fotosRef','pintores','apuntes','pinceles','paletas','marcasPinceles','tiendas'];
 let instantanea={};
@@ -1646,7 +1659,7 @@ document.getElementById('volver-paleta').addEventListener('click',()=>{
   volverAPaleta=null;
 });
 function abrirPaleta(id){
-  const p=id?datos.paletas.find(x=>x.id===id):null; formPa.reset(); $('#dlg-paleta-titulo').textContent=p?p.nombre:'Nueva paleta'; $('#eliminar-paleta').classList.toggle('oculto',!p);
+  const p=(id!=null && id!==undefined && id!=="")?datos.paletas.find(x=>x.id===id):null; formPa.reset(); $('#dlg-paleta-titulo').textContent=p?p.nombre:'Nueva paleta'; $('#eliminar-paleta').classList.toggle('oculto',!p);
   if(p) for(const [k,v] of Object.entries(p)){ const el=formPa.elements[k]; if(el&&typeof v!=='object') el.value=v??''; }
   formPa._sel=p?[...(p.colores||[])]:[]; formPa._fotos=p?[...(p.fotos||[])]:[]; $('#pa-col-buscar').value=''; pintarColoresPaleta(); pintarFotosPaleta(); dlgPa.showModal();
 }
@@ -2065,12 +2078,12 @@ function pintarDuplicados(){
     const ordenados=[...l].sort((a,b)=>completitud(b)-completitud(a));
     const conservarId=ordenados[0].id;
     const filas=ordenados.map(p=>{
-      const conservar=p.id===conservarId;
+      const sugerida=p.id===conservarId;
       return `<div class="dup-fila">
         <span class="mini" style="background:${esc(p.swatch||'#ccc')}"></span>
         <span class="datos"><b>${esc(p.nombreEs||p.nombreEn)}</b> ${p.nombreEn&&p.nombreEs?`<span class="n">${esc(p.nombreEn)}</span>`:''}
-          <div class="n">${esc(nombreMarca(p.marca))}${p.pigmentos?' · '+esc(p.pigmentos):''}${p.serie?' · serie '+esc(p.serie):''}${(p.fotos||[]).length?' · con foto':''}</div></span>
-        ${conservar?'<span class="conservar">conservar</span>':`<label><input type="checkbox" class="dup-check" data-id="${esc(p.id)}" checked> eliminar</label>`}
+          <div class="n">${esc(nombreMarca(p.marca))}${p.pigmentos?' · '+esc(p.pigmentos):''}${p.serie?' · serie '+esc(p.serie):''}${(p.fotos||[]).length?' · con foto':''}${sugerida?' · <span style=\'color:var(--ok)\'>sugerido conservar</span>':''}</div></span>
+        <label><input type="checkbox" class="dup-check" data-id="${esc(p.id)}" ${sugerida?'':'checked'}> eliminar</label>
       </div>`;
     }).join('');
     return `<div class="dup-grupo"><h4>${esc(ordenados[0].nombreEs||ordenados[0].nombreEn)} · ${l.length} copias</h4>${filas}</div>`;
@@ -2079,6 +2092,10 @@ function pintarDuplicados(){
 $('#dup-eliminar').addEventListener('click',async()=>{
   const ids=$$('#dup-lista .dup-check:checked').map(i=>i.dataset.id);
   if(!ids.length){ alert('No hay ninguna ficha marcada para eliminar.'); return; }
+  // avisar si algún grupo queda sin ningún color (todas marcadas)
+  { const porGrupo={}; $$('#dup-lista .dup-grupo').forEach((g,gi)=>{ const chks=[...g.querySelectorAll('.dup-check')]; porGrupo[gi]={total:chks.length,marc:chks.filter(c=>c.checked).length}; });
+    const gruposVacios=Object.values(porGrupo).filter(x=>x.total>0 && x.marc===x.total).length;
+    if(gruposVacios && !confirm(`En ${gruposVacios} grupo(s) has marcado TODAS las copias para borrar (no quedará ninguna de ese color). ¿Seguro que quieres continuar?`)) return; }
   if(!confirm(`Se eliminarán ${ids.length} fichas duplicadas. Se conservan las marcadas como «conservar». ¿Continuar?`)) return;
   const set=new Set(ids);
   // borrar fotos asociadas de las que se eliminan
